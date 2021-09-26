@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source Code\Color.cpp">
+      <Filter>Source Code\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\glmath.cpp">
+      <Filter>Source Code\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Light.cpp">
+      <Filter>Source Code\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Primitive.cpp">
+      <Filter>Source Code\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleAudio.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleCamera3D.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleInput.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleRenderer3D.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleWindow.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\log.cpp">
+      <Filter>Source Code\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Timer.cpp">
+      <Filter>Source Code\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleGuiManager.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Application.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Main.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_demo.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_draw.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_opengl3.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_sdl.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_tables.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_widgets.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source Code\Color.h">
+      <Filter>Source Code\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\glmath.h">
+      <Filter>Source Code\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\p2DynArray.h">
+      <Filter>Source Code\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\p2List.h">
+      <Filter>Source Code\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\p2Point.h">
+      <Filter>Source Code\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Light.h">
+      <Filter>Source Code\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Primitive.h">
+      <Filter>Source Code\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Module.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleAudio.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleCamera3D.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleInput.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleRenderer3D.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleWindow.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Timer.h">
+      <Filter>Source Code\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleGuiManager.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Application.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Globals.h">
+      <Filter>Source Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imconfig.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3_loader.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_sdl.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_internal.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imstb_rectpack.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imstb_textedit.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imstb_truetype.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Code">
+      <UniqueIdentifier>{32ca1e1f-ecff-4ef4-9a2f-8311a514e025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Containers">
+      <UniqueIdentifier>{714df10c-4a3b-4d1f-8291-33983eaa1141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Helpers">
+      <UniqueIdentifier>{0442dfdd-1ce7-4894-b568-3cf11650530d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Modules">
+      <UniqueIdentifier>{0f848506-60f8-4088-9bef-0f25c784bcdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\Tools">
+      <UniqueIdentifier>{987d2695-6b02-423c-a263-bc332a487df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies">
+      <UniqueIdentifier>{596880b4-1e5c-46b6-94ef-090f035fba59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\imgui">
+      <UniqueIdentifier>{85b2e1ff-3188-4c11-a677-641b186e3749}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

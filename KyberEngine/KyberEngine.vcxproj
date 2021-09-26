@@ -13,15 +13,22 @@
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui_demo.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui_draw.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui_tables.cpp" />
+    <ClCompile Include="Source Code\External\imgui\include\imgui_widgets.cpp" />
     <ClCompile Include="Source Code\glmath.cpp" />
     <ClCompile Include="Source Code\Light.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
     <ClCompile Include="Source Code\Main.cpp" />
     <ClCompile Include="Source Code\ModuleAudio.cpp" />
     <ClCompile Include="Source Code\ModuleCamera3D.cpp" />
+    <ClCompile Include="Source Code\ModuleGuiManager.cpp" />
     <ClCompile Include="Source Code\ModuleInput.cpp" />
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp" />
-    <ClCompile Include="Source Code\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
     <ClCompile Include="Source Code\Primitive.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
@@ -29,15 +36,24 @@
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Color.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imconfig.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imgui.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_sdl.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imgui_internal.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imstb_rectpack.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imstb_textedit.h" />
+    <ClInclude Include="Source Code\External\imgui\include\imstb_truetype.h" />
     <ClInclude Include="Source Code\glmath.h" />
     <ClInclude Include="Source Code\Globals.h" />
     <ClInclude Include="Source Code\Light.h" />
     <ClInclude Include="Source Code\Module.h" />
     <ClInclude Include="Source Code\ModuleAudio.h" />
     <ClInclude Include="Source Code\ModuleCamera3D.h" />
+    <ClInclude Include="Source Code\ModuleGuiManager.h" />
     <ClInclude Include="Source Code\ModuleInput.h" />
     <ClInclude Include="Source Code\ModuleRenderer3D.h" />
-    <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
     <ClInclude Include="Source Code\p2DynArray.h" />
     <ClInclude Include="Source Code\p2List.h" />
@@ -90,14 +106,15 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source Code\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source Code\External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS_IGNORE_PACKING_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source Code\External\SDL\libx86;$(ProjectDir)Source Code\External\SDL_mixer\libx86;$(ProjectDir)Source Code\External\glut\libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glut32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source Code\External\SDL\libx86;$(ProjectDir)Source Code\External\SDL_mixer\libx86;$(ProjectDir)Source Code\External\glut\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,7 +126,8 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source Code\External</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source Code\External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WINDOWS_IGNORE_PACKING_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -117,8 +135,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source Code\External\SDL\libx86;$(ProjectDir)Source Code\External\SDL_mixer\libx86;$(ProjectDir)Source Code\External\glut\libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glut32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source Code\External\SDL\libx86;$(ProjectDir)Source Code\External\SDL_mixer\libx86;$(ProjectDir)Source Code\External\glut\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

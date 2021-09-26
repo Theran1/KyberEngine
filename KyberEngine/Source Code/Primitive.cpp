@@ -1,7 +1,9 @@
+#include "Primitive.h"
 #include "Globals.h"
+
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "Primitive.h"
+
 #include "glut/include/glut.h"
 
 // ------------------------------------------------------------

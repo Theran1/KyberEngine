@@ -1,10 +1,11 @@
 #pragma once
+#include "Globals.h"
 
 class Application;
 
 class Module
 {
-private :
+private:
 	bool enabled;
 
 public:

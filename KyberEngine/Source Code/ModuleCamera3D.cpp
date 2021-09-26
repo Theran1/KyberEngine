@@ -40,6 +40,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
+	/*
 	vec3 newPos(0,0,0);
 	float speed = 3.0f * dt;
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -97,6 +98,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
+	*/
 
 	return UPDATE_CONTINUE;
 }
@@ -121,7 +123,7 @@ void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool Rota
 }
 
 // -----------------------------------------------------------------
-void ModuleCamera3D::LookAt( const vec3 &Spot)
+void ModuleCamera3D::LookAt(const vec3& Spot)
 {
 	Reference = Spot;
 
@@ -131,7 +133,6 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 
 	CalculateViewMatrix();
 }
-
 
 // -----------------------------------------------------------------
 void ModuleCamera3D::Move(const vec3 &Movement)
