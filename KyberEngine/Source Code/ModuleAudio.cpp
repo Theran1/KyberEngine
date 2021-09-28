@@ -52,11 +52,11 @@
 //		Mix_FreeMusic(music);
 //	}
 //
-//	p2List_item<Mix_Chunk*>* item;
+//	list<Mix_Chunk*>::item;
 //
-//	for(item = fx.getFirst(); item != NULL; item = item->next)
+//	for(item = fx.getFirst(); item != NULL; ++item)
 //	{
-//		Mix_FreeChunk(item->data);
+//		Mix_FreeChunk(*item);
 //	}
 //
 //	fx.clear();

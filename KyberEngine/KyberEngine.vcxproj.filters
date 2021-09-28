@@ -72,15 +72,6 @@
     <ClInclude Include="Source Code\glmath.h">
       <Filter>Source Code\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\p2DynArray.h">
-      <Filter>Source Code\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2List.h">
-      <Filter>Source Code\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2Point.h">
-      <Filter>Source Code\Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\Light.h">
       <Filter>Source Code\Helpers</Filter>
     </ClInclude>
