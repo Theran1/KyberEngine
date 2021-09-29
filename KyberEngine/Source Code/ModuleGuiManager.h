@@ -4,9 +4,9 @@
 #include "Module.h"
 #include "Globals.h"
 
-#include "imgui/include/imgui.h"
-#include "imgui/include/imgui_impl_sdl.h"
-#include "imgui/include/imgui_impl_opengl3.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
 
 class Application;
 

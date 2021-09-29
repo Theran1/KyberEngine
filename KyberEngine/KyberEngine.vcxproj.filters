@@ -43,27 +43,6 @@
     <ClCompile Include="Source Code\Main.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui_demo.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui_draw.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_opengl3.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_sdl.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui_tables.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External\imgui\include\imgui_widgets.cpp">
-      <Filter>Dependencies\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\External\MathGeoLib\include\Algorithm\GJK.cpp">
       <Filter>Dependencies\MathGeoLib\Algorithm</Filter>
     </ClCompile>
@@ -190,6 +169,27 @@
     <ClCompile Include="Source Code\External\MathGeoLib\include\Time\Clock.cpp">
       <Filter>Dependencies\MathGeoLib\Time</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_draw.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_opengl3.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_impl_sdl.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_tables.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_widgets.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External\imgui\include\imgui_demo.cpp">
+      <Filter>Dependencies\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Color.h">
@@ -233,33 +233,6 @@
     </ClInclude>
     <ClInclude Include="Source Code\Globals.h">
       <Filter>Source Code</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imconfig.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imgui.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3_loader.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_sdl.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imgui_internal.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imstb_rectpack.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imstb_textedit.h">
-      <Filter>Dependencies\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External\imgui\include\imstb_truetype.h">
-      <Filter>Dependencies\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External\Glew\include\eglew.h">
       <Filter>Dependencies\Glew</Filter>
@@ -498,6 +471,33 @@
     <ClInclude Include="Source Code\External\MathGeoLib\include\Time\Clock.h">
       <Filter>Dependencies\MathGeoLib\Time</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3_loader.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_impl_sdl.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui_internal.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imstb_rectpack.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imstb_textedit.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imstb_truetype.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imconfig.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\imgui\include\imgui.h">
+      <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Code">
@@ -517,9 +517,6 @@
     </Filter>
     <Filter Include="Dependencies">
       <UniqueIdentifier>{596880b4-1e5c-46b6-94ef-090f035fba59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Dependencies\imgui">
-      <UniqueIdentifier>{85b2e1ff-3188-4c11-a677-641b186e3749}</UniqueIdentifier>
     </Filter>
     <Filter Include="Dependencies\Glew">
       <UniqueIdentifier>{b89fc418-2bbd-42e4-b901-c54325a8855c}</UniqueIdentifier>
@@ -541,6 +538,9 @@
     </Filter>
     <Filter Include="Dependencies\MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{23368b3b-2118-4c63-872d-de70b7b1cc7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\imgui">
+      <UniqueIdentifier>{41008d9c-ef51-4a7e-a090-d1146b37ed79}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
