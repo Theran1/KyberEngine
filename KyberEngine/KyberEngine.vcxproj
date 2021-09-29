@@ -36,6 +36,10 @@
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Color.h" />
+    <ClInclude Include="Source Code\External\Glew\include\eglew.h" />
+    <ClInclude Include="Source Code\External\Glew\include\glew.h" />
+    <ClInclude Include="Source Code\External\Glew\include\glxew.h" />
+    <ClInclude Include="Source Code\External\Glew\include\wglew.h" />
     <ClInclude Include="Source Code\External\imgui\include\imconfig.h" />
     <ClInclude Include="Source Code\External\imgui\include\imgui.h" />
     <ClInclude Include="Source Code\External\imgui\include\imgui_impl_opengl3.h" />
@@ -45,6 +49,9 @@
     <ClInclude Include="Source Code\External\imgui\include\imstb_rectpack.h" />
     <ClInclude Include="Source Code\External\imgui\include\imstb_textedit.h" />
     <ClInclude Include="Source Code\External\imgui\include\imstb_truetype.h" />
+    <ClInclude Include="Source Code\External\MathGeoLib\include\MathBuildConfig.h" />
+    <ClInclude Include="Source Code\External\MathGeoLib\include\MathGeoLib.h" />
+    <ClInclude Include="Source Code\External\MathGeoLib\include\MathGeoLibFwd.h" />
     <ClInclude Include="Source Code\glmath.h" />
     <ClInclude Include="Source Code\Globals.h" />
     <ClInclude Include="Source Code\Light.h" />

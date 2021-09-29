@@ -135,6 +135,27 @@
     <ClInclude Include="Source Code\External\imgui\include\imstb_truetype.h">
       <Filter>Dependencies\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\External\Glew\include\eglew.h">
+      <Filter>Dependencies\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\Glew\include\glew.h">
+      <Filter>Dependencies\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\Glew\include\glxew.h">
+      <Filter>Dependencies\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\Glew\include\wglew.h">
+      <Filter>Dependencies\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\MathGeoLib\include\MathBuildConfig.h">
+      <Filter>Dependencies\MathGeo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\MathGeoLib\include\MathGeoLib.h">
+      <Filter>Dependencies\MathGeo</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External\MathGeoLib\include\MathGeoLibFwd.h">
+      <Filter>Dependencies\MathGeo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Code">
@@ -157,6 +178,12 @@
     </Filter>
     <Filter Include="Dependencies\imgui">
       <UniqueIdentifier>{85b2e1ff-3188-4c11-a677-641b186e3749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\Glew">
+      <UniqueIdentifier>{b89fc418-2bbd-42e4-b901-c54325a8855c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dependencies\MathGeo">
+      <UniqueIdentifier>{d2f18fa2-3fbd-4db9-ae19-d4123201ad60}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
