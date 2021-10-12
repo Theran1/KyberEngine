@@ -18,7 +18,26 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	void SetTitle(const char* title);
+	// Window Getters
+	float	GetWindowBrightness() const;
+	int		GetWindowWidth() const;
+	int		GetWindowHeight() const;
+	void	GetScreenRes(int& w, int& h) const;
+	uint	GetRefreshRate() const;
+	bool	GetFullscreen() const;
+	bool	GetResizable() const;
+	bool	GetBorderless() const;
+	bool	GetFullDesktop() const;
+
+	// Window Setters
+	void	SetWindowTitle(const char* title);
+	void	SetWindowBrightness(float b);
+	void	SetWindowWidth(int w);
+	void	SetWindowHeight(int h);
+	void	SetFullscreen(bool f);
+	void	SetResizable(bool r);
+	void	SetBorderless(bool b);
+	void	SetFullscreenDesktop(bool fd);
 
 public:
 	// The window we'll be rendering to
@@ -26,6 +45,14 @@ public:
 
 	// The surface contained by the window
 	SDL_Surface* screen_surface;
+
+private:
+	int screenWidth;
+	int screenHeight;
+	bool fullscreen;
+	bool resizable;
+	bool borderless;
+	bool fullDesktop;
 };
 
 #endif // __ModuleWindow_H__

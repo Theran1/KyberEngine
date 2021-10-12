@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <vector>
 #include <list>
-
+#include <string>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
@@ -18,10 +18,39 @@ void log(const char file[], int line, const char* format, ...);
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
-#define HAVE_M_PI
 
+//  NULL just in case ----------------------
+
+#ifdef NULL
+#undef NULL
+#endif
+#define NULL  0
+
+// Deletes a buffer
+#define RELEASE( x ) \
+	{						\
+	if( x != nullptr )		\
+		{					  \
+	  delete x;			\
+	  x = nullptr;			  \
+		}					  \
+	}
+
+// Deletes an array of buffers
+#define RELEASE_ARRAY( x ) \
+	{							  \
+	if( x != NULL )			  \
+		{							\
+	  delete[] x;				\
+	  x = NULL;					\
+		}							\
+							  \
+	}
 
 typedef unsigned int uint;
+typedef unsigned char uchar;
+typedef unsigned __int32 uint32;
+typedef unsigned __int64 uint64;
 
 enum update_status
 {
@@ -31,12 +60,20 @@ enum update_status
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 1024
 #define SCREEN_SIZE 1
-#define WIN_FULLSCREEN false
-#define WIN_RESIZABLE true
-#define WIN_BORDERLESS false
-#define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "Kyber Engine"
+
+// Performance macros
+#define PERF_START(timer) timer.Start()
+#define PERF_PEEK(timer) LOG("took %f ms", timer.ReadMs())
+
+// ImGui Globals
+#define IMGUI_BLACK ImVec4(0.0f,0.0f,0.0f,1.f)
+#define IMGUI_LIGHT_GREY ImVec4(0.8f,0.8f,0.8f,1.f)
+#define IMGUI_GREY ImVec4(0.6f,0.6f,0.6f,1.f)
+#define IMGUI_BLUE ImVec4(0.2f,0.2f,1.f,1.f)
+#define IMGUI_GREEN ImVec4(0.f,1.f,0.f,1.f)
+#define IMGUI_YELLOW ImVec4(1.f,1.f,0.f,1.f)
+#define IMGUI_RED ImVec4(1.f,0.f,0.f,1.f)
+#define IMGUI_WHITE ImVec4(1.f,1.f,1.f,1.f)

@@ -31,9 +31,6 @@
     <ClCompile Include="Source Code\log.cpp">
       <Filter>Source Code\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\Timer.cpp">
-      <Filter>Source Code\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\ModuleGuiManager.cpp">
       <Filter>Source Code\Modules</Filter>
     </ClCompile>
@@ -497,6 +494,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\External\imgui\include\imgui.h">
       <Filter>Dependencies\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\PerfTimer.h">
+      <Filter>Source Code\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
