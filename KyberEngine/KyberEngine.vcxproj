@@ -73,6 +73,9 @@
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
     <ClCompile Include="Source Code\Primitive.cpp" />
+    <ClCompile Include="Source Code\TabAbout.cpp" />
+    <ClCompile Include="Source Code\TabConfig.cpp" />
+    <ClCompile Include="Source Code\TabConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -177,6 +180,10 @@
     <ClInclude Include="Source Code\ModuleWindow.h" />
     <ClInclude Include="Source Code\PerfTimer.h" />
     <ClInclude Include="Source Code\Primitive.h" />
+    <ClInclude Include="Source Code\Tab.h" />
+    <ClInclude Include="Source Code\TabAbout.h" />
+    <ClInclude Include="Source Code\TabConfig.h" />
+    <ClInclude Include="Source Code\TabConsole.h" />
     <ClInclude Include="Source Code\Timer.h" />
   </ItemGroup>
   <ItemGroup>

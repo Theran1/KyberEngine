@@ -32,9 +32,6 @@ public:
 	uint GetFramerateLimit() const;
 	void SetFramerateLimit(uint maxFramerate);
 
-	float GetFramerate() const;
-	float GetFrametime() const;
-
 public:
 
 	ModuleWindow* window;
@@ -54,7 +51,6 @@ private:
 
 	// Timing measures
 	uint frameCount;
-	float frametimeMs;
 	float dt;
 	uint fpsCap;
 

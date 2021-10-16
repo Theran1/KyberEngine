@@ -27,12 +27,10 @@ Application::Application()
 	orgName = "UPC-CITM";
 
 	frameCount = 0;
-	frametimeMs = 0;
 	dt = 0.0f;
+	fpsCap = 60;
 
 	avgFramerate = 0.0f;
-
-	fpsCap = 60;
 
 	lastSecFramesTime.Stop();
 }
@@ -90,7 +88,7 @@ void Application::FinishUpdate()
 		frameCount = 0;
 	}
 
-	frametimeMs = (float)perfTimer.ReadMs();
+	float frametimeMs = (float)perfTimer.ReadMs();
 
 	float msCap = float(1000.0f / fpsCap);
 
@@ -103,7 +101,7 @@ void Application::FinishUpdate()
 	else
 		perfTimer.Start();
 
-	guiManager->UpdateFrameInfo();
+	guiManager->tabConfig->UpdateFrameInfo(avgFramerate, frametimeMs);
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -128,6 +126,7 @@ update_status Application::Update()
 	}
 
 	FinishUpdate();
+
 	return ret;
 }
 
@@ -190,14 +189,4 @@ void Application::SetFramerateLimit(uint maxFramerate)
 		fpsCap = maxFramerate;
 	else
 		fpsCap = 0;
-}
-
-float Application::GetFramerate() const
-{
-	return avgFramerate;
-}
-
-float Application::GetFrametime() const
-{
-	return frametimeMs;
 }

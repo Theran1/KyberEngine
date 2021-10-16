@@ -77,3 +77,8 @@ enum update_status
 #define IMGUI_YELLOW ImVec4(1.f,1.f,0.f,1.f)
 #define IMGUI_RED ImVec4(1.f,0.f,0.f,1.f)
 #define IMGUI_WHITE ImVec4(1.f,1.f,1.f,1.f)
+
+#define IMGUI_PRINT(field, format, ...) \
+	ImGui::Text(field); \
+	ImGui::SameLine(); \
+	ImGui::TextColored(IMGUI_GREEN, format, __VA_ARGS__)

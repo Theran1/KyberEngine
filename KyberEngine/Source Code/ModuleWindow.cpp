@@ -12,7 +12,7 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 	fullscreen = false;
 	resizable = true;
 	borderless = false;
-	fullDesktop = false;
+	fullscreenDesktop = false;
 }
 
 // Destructor
@@ -57,7 +57,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if (fullDesktop == true)
+		if (fullscreenDesktop == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
@@ -85,10 +85,8 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	// Destroy window
-	if (window != NULL)
-	{
+	if (window != nullptr)
 		SDL_DestroyWindow(window);
-	}
 
 	// Quit SDL subsystems
 	SDL_Quit();
@@ -96,44 +94,23 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::SetWindowTitle(const char* title)
-{
-	SDL_SetWindowTitle(window, title);
-}
-
+// Window Getters ---
 float ModuleWindow::GetWindowBrightness() const
 {
 	return SDL_GetWindowBrightness(window);
 }
 
-void ModuleWindow::SetWindowBrightness(float brightness)
-{
-	SDL_SetWindowBrightness(window, brightness);
-}
-
-int ModuleWindow::GetWindowWidth() const
+uint ModuleWindow::GetWindowWidth() const
 {
 	return screenWidth;
 }
 
-void ModuleWindow::SetWindowWidth(int width)
-{
-	screenWidth = width;
-	SDL_SetWindowSize(window, screenWidth, screenHeight);
-}
-
-int ModuleWindow::GetWindowHeight() const
+uint ModuleWindow::GetWindowHeight() const
 {
 	return screenHeight;
 }
 
-void ModuleWindow::SetWindowHeight(int height)
-{
-	screenHeight = height;
-	SDL_SetWindowSize(window, screenWidth, screenHeight);
-}
-
-void ModuleWindow::GetScreenRes(int& width, int& height) const
+void ModuleWindow::GetScreenRes(uint& width, uint& height) const
 {
 	SDL_DisplayMode displayMode;
 	if (SDL_GetDesktopDisplayMode(0, &displayMode) != 0)
@@ -169,6 +146,45 @@ bool ModuleWindow::GetFullscreen() const
 	return fullscreen;
 }
 
+bool ModuleWindow::GetResizable() const
+{
+	return resizable;
+}
+
+bool ModuleWindow::GetBorderless() const
+{
+	return borderless;
+}
+
+bool ModuleWindow::GetFullscreenDesktop() const
+{
+	return fullscreenDesktop;
+}
+
+// Window Setters ---
+void ModuleWindow::SetWindowTitle(const char* title)
+{
+	SDL_SetWindowTitle(window, title);
+}
+
+void ModuleWindow::SetWindowBrightness(float brightness)
+{
+	if (SDL_SetWindowBrightness(window, brightness) != 0)
+		LOG("Could not change window brightness: %s\n", SDL_GetError());
+}
+
+void ModuleWindow::SetWindowWidth(uint width)
+{
+	screenWidth = width;
+	SDL_SetWindowSize(window, screenWidth, GetWindowHeight());
+}
+
+void ModuleWindow::SetWindowHeight(uint height)
+{
+	screenHeight = height;
+	SDL_SetWindowSize(window, GetWindowWidth(), screenHeight);
+}
+
 void ModuleWindow::SetFullscreen(bool fullscreen)
 {
 	if (fullscreen != this->fullscreen)
@@ -178,70 +194,50 @@ void ModuleWindow::SetFullscreen(bool fullscreen)
 		if (this->fullscreen == true)
 		{
 			if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0)
-			{
 				LOG("Could not switch to fullscreen: %s\n", SDL_GetError());
-			}
-			fullDesktop = false;
+
+			fullscreenDesktop = false;
 		}
 		else
 		{
 			if (SDL_SetWindowFullscreen(window, 0) != 0)
-			{
 				LOG("Could not switch to windowed: %s\n", SDL_GetError());
-			}
 		}
 	}
 }
 
-bool ModuleWindow::GetResizable() const
-{
-	return resizable;
-}
-
 void ModuleWindow::SetResizable(bool resizable)
 {
-	//TODO: save and load this value
+	// cannot be changed while the program is running, but we can save the change
 	this->resizable = resizable;
-}
-
-bool ModuleWindow::GetBorderless() const
-{
-	return borderless;
 }
 
 void ModuleWindow::SetBorderless(bool borderless)
 {
-	if (borderless != this->borderless && fullscreen == false && fullDesktop == false)
+	if (borderless != this->borderless && fullscreen == false && fullscreenDesktop == false)
 	{
 		this->borderless = borderless;
 		SDL_SetWindowBordered(window, (SDL_bool)!this->borderless);
 	}
 }
 
-bool ModuleWindow::GetFullDesktop() const
-{
-	return fullDesktop;
-}
-
 void ModuleWindow::SetFullscreenDesktop(bool fullscreenDesktop)
 {
-	if (fullscreenDesktop != this->fullDesktop)
+	if (fullscreenDesktop != this->fullscreenDesktop)
 	{
-		this->fullDesktop = fullscreenDesktop;
-		if (this->fullDesktop == true)
+		this->fullscreenDesktop = fullscreenDesktop;
+
+		if (this->fullscreenDesktop == true)
 		{
 			if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
-			{
 				LOG("Could not switch to fullscreen desktop: %s\n", SDL_GetError());
-			}
+
 			fullscreen = false;
 		}
 		else
 		{
 			if (SDL_SetWindowFullscreen(window, 0) != 0)
-			{
 				LOG("Could not switch to windowed: %s\n", SDL_GetError());
-			}
 		}
 	}
 }

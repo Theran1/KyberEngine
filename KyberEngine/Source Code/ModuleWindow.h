@@ -20,20 +20,20 @@ public:
 
 	// Window Getters
 	float	GetWindowBrightness() const;
-	int		GetWindowWidth() const;
-	int		GetWindowHeight() const;
-	void	GetScreenRes(int& w, int& h) const;
+	uint	GetWindowWidth() const;
+	uint	GetWindowHeight() const;
+	void	GetScreenRes(uint& w, uint& h) const;
 	uint	GetRefreshRate() const;
 	bool	GetFullscreen() const;
 	bool	GetResizable() const;
 	bool	GetBorderless() const;
-	bool	GetFullDesktop() const;
+	bool	GetFullscreenDesktop() const;
 
 	// Window Setters
 	void	SetWindowTitle(const char* title);
 	void	SetWindowBrightness(float b);
-	void	SetWindowWidth(int w);
-	void	SetWindowHeight(int h);
+	void	SetWindowWidth(uint w);
+	void	SetWindowHeight(uint h);
 	void	SetFullscreen(bool f);
 	void	SetResizable(bool r);
 	void	SetBorderless(bool b);
@@ -47,12 +47,12 @@ public:
 	SDL_Surface* screen_surface;
 
 private:
-	int screenWidth;
-	int screenHeight;
+	uint screenWidth;
+	uint screenHeight;
 	bool fullscreen;
 	bool resizable;
 	bool borderless;
-	bool fullDesktop;
+	bool fullscreenDesktop;
 };
 
 #endif // __ModuleWindow_H__

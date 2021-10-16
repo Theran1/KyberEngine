@@ -187,6 +187,15 @@
     <ClCompile Include="Source Code\External\imgui\include\imgui_demo.cpp">
       <Filter>Dependencies\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\TabConfig.cpp">
+      <Filter>Source Code\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\TabAbout.cpp">
+      <Filter>Source Code\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\TabConsole.cpp">
+      <Filter>Source Code\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Color.h">
@@ -498,6 +507,18 @@
     <ClInclude Include="Source Code\PerfTimer.h">
       <Filter>Source Code\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\Tab.h">
+      <Filter>Source Code\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\TabConfig.h">
+      <Filter>Source Code\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\TabAbout.h">
+      <Filter>Source Code\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\TabConsole.h">
+      <Filter>Source Code\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Code">
@@ -541,6 +562,9 @@
     </Filter>
     <Filter Include="Dependencies\imgui">
       <UniqueIdentifier>{41008d9c-ef51-4a7e-a090-d1146b37ed79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Code\GUI">
+      <UniqueIdentifier>{d698664e-6c3e-4c73-b98c-70e07e13dd20}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
