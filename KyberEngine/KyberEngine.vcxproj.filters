@@ -196,6 +196,9 @@
     <ClCompile Include="Source Code\TabConsole.cpp">
       <Filter>Source Code\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ModuleScene.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Color.h">
@@ -518,6 +521,12 @@
     </ClInclude>
     <ClInclude Include="Source Code\TabConsole.h">
       <Filter>Source Code\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleScene.h">
+      <Filter>Source Code\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\RendererGlobals.h">
+      <Filter>Dependencies\Glew</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

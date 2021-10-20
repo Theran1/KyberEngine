@@ -1,6 +1,7 @@
 #include "Globals.h"
+#include "RendererGlobals.h"
 #include "Light.h"
-#include <gl/GL.h>
+
 
 Light::Light() : ref(-1), on(false), position(0.0f, 0.0f, 0.0f)
 {}

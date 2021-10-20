@@ -2,6 +2,7 @@
 #pragma once
 #include "glmath.h"
 #include "Color.h"
+#include "Globals.h"
 
 enum PrimitiveTypes
 {
@@ -10,8 +11,24 @@ enum PrimitiveTypes
 	Primitive_Plane,
 	Primitive_Cube,
 	Primitive_Sphere,
-	Primitive_Cylinder
+	Primitive_Cylinder,
+	Primitive_Pyramid,
+	Custom_Mesh,
 };
+
+
+
+struct PrimitiveData
+{
+	uint id_index = 0; // index in VRAM
+	uint num_index = 0;
+	uint* indices = nullptr;
+
+	uint id_vertex = 0; // unique vertex in VRAM
+	uint num_vertex = 0;
+	float* vertices = nullptr;
+};
+
 
 class Primitive
 {
@@ -92,4 +109,31 @@ public:
 public:
 	vec3 normal;
 	float constant;
+};
+
+
+
+class Pyramid : public Primitive
+{
+public:
+	Pyramid();
+	Pyramid(float baseX, float baseZ, float height);
+	void InnerRender() const;
+public:
+	vec2 base;
+	float height;
+};
+
+
+
+
+
+class CustomMesh : public Primitive
+{
+public:
+	CustomMesh();
+	CustomMesh(PrimitiveData* _data);
+	void InnerRender() const;
+public:
+	PrimitiveData* data;
 };

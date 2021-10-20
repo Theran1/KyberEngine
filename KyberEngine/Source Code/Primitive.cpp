@@ -1,8 +1,7 @@
 #include "Primitive.h"
+#include "RendererGlobals.h"
 #include "Globals.h"
 
-#include <gl/GL.h>
-#include <gl/GLU.h>
 
 //#include "glut/include/glut.h"
 
@@ -169,7 +168,37 @@ Sphere::Sphere(float radius) : Primitive(), radius(radius)
 
 void Sphere::InnerRender() const
 {
-	//glutSolidSphere(radius, 25, 25);
+	int stacks = 16;
+	int slices = 16;
+
+	int i, j;
+	for (j = 0; j < stacks; j++)
+	{
+		double lat1 = (M_PI / stacks) * j - M_PI / 2;
+		double lat2 = (M_PI / stacks) * (j + 1) - M_PI / 2;
+		double sinLat1 = sin(lat1);
+		double cosLat1 = cos(lat1);
+		double sinLat2 = sin(lat2);
+		double cosLat2 = cos(lat2);
+		glBegin(GL_QUAD_STRIP);
+		for (i = 0; i <= slices; i++)
+		{
+			double longitude = (2 * M_PI / slices) * i;
+			double sinLong = sin(longitude);
+			double cosLong = cos(longitude);
+			double x1 = cosLong * cosLat1;
+			double y1 = sinLong * cosLat1;
+			double z1 = sinLat1;
+			double x2 = cosLong * cosLat2;
+			double y2 = sinLong * cosLat2;
+			double z2 = sinLat2;
+			glNormal3d(x2, y2, z2);
+			glVertex3d(radius * x2, radius * y2, radius * z2);
+			glNormal3d(x1, y1, z1);
+			glVertex3d(radius * x1, radius * y1, radius * z1);
+		}
+		glEnd();
+	}
 }
 
 
@@ -273,4 +302,96 @@ void Plane::InnerRender() const
 	}
 
 	glEnd();
+}
+
+// PYRAMID ================================================
+Pyramid::Pyramid() : Primitive(), base(1.0f, 1.0f), height(1.0f)
+{
+	type = PrimitiveTypes::Primitive_Pyramid;
+}
+
+Pyramid::Pyramid(float baseX, float baseZ, float height) : Primitive(), base(baseX, baseZ), height(height)
+{
+	type = PrimitiveTypes::Primitive_Pyramid;
+}
+
+void Pyramid::InnerRender() const
+{
+	float bx = base.x * 0.5f;
+	float bz = base.y * 0.5f;
+	float sh = height * 0.5f;
+
+	glBegin(GL_QUADS);
+
+	//Base
+	glNormal3f(0.0f, 0.0f, -1.0f);
+	glVertex3f(-bx, -sh, bz);
+	glVertex3f(bx, -sh, bz);
+	glVertex3f(bx, -sh, -bz);
+	glVertex3f(-bx, -sh, -bz);
+
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+
+	//Faces
+
+	float ang = atan(height / bz);
+	glNormal3f(0.0f, ang, ang);
+
+	glVertex3f(0, sh, 0);
+	glVertex3f(-bx, -sh, bz);
+	glVertex3f(bx, -sh, bz);
+
+	ang = atan(height / bx);
+	glNormal3f(ang, ang, 0.0f);
+
+	glVertex3f(0, sh, 0);
+	glVertex3f(bx, -sh, bz);
+	glVertex3f(bx, -sh, -bz);
+
+
+	ang = atan(height / -bz);
+	glNormal3f(0.0f, ang, ang);
+
+	glVertex3f(0, sh, 0);
+	glVertex3f(bx, -sh, -bz);
+	glVertex3f(-bx, -sh, -bz);
+
+
+	ang = atan(height / -bx);
+	glNormal3f(ang, ang, 0.0f);
+
+	glVertex3f(0, sh, 0);
+	glVertex3f(-bx, -sh, -bz);
+	glVertex3f(-bx, -sh, bz);
+	glEnd();
+}
+
+
+
+
+
+// CUSTOM MESH ============================================
+CustomMesh::CustomMesh() : Primitive()
+{
+	type = PrimitiveTypes::Custom_Mesh;
+}/*
+
+CustomMesh::CustomMesh(PrimitiveData* _data) : Primitive(), data(_data)
+{
+	type = PrimitiveTypes::Custom_Mesh;
+}*/
+
+void CustomMesh::InnerRender() const
+{
+	
+	glBindBuffer(GL_ARRAY_BUFFER, data->id_vertex);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,data->id_index);
+	
+	glDrawElements(GL_TRIANGLES, data->num_index, GL_UNSIGNED_INT, 0);
+
+	
+
 }
