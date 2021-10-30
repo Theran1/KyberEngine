@@ -199,6 +199,9 @@
     <ClCompile Include="Source Code\ModuleScene.cpp">
       <Filter>Source Code\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ModuleAssImp.cpp">
+      <Filter>Source Code\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Color.h">
@@ -527,6 +530,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\RendererGlobals.h">
       <Filter>Dependencies\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleAssImp.h">
+      <Filter>Source Code\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

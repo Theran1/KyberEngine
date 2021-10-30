@@ -9,6 +9,7 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	guiManager = new ModuleGuiManager(this);
+	assetsImporter = new ModuleAssImp(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -19,6 +20,7 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	//AddModule(audio);
+	AddModule(assetsImporter);
 	AddModule(scene);
 	AddModule(guiManager);
 
@@ -109,20 +111,20 @@ void Application::FinishUpdate()
 // Call PreUpdate, Update and PostUpdate on all modules
 update_status Application::Update()
 {
-	update_status ret = UPDATE_CONTINUE;
+	update_status ret = update_status::UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == UPDATE_CONTINUE; ++it)
+	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 	{
 		ret = (*it)->PreUpdate(dt);
 	}
 
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == UPDATE_CONTINUE; ++it)
+	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 	{
 		ret = (*it)->Update(dt);
 	}
 
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == UPDATE_CONTINUE; ++it)
+	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 	{
 		ret = (*it)->PostUpdate(dt);
 	}

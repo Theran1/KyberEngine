@@ -52,7 +52,7 @@ typedef unsigned char uchar;
 typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 
-enum update_status
+enum class update_status
 {
 	UPDATE_CONTINUE = 1,
 	UPDATE_STOP,

@@ -1,16 +1,95 @@
 #include "Primitive.h"
 #include "RendererGlobals.h"
-#include "Globals.h"
 
+Mesh::Mesh()
+{
+	EBO = 0;
+	numIndices = 0;
+	indices = nullptr;
+	
+	VAO = 0;
 
-//#include "glut/include/glut.h"
+	VBO = 0;
+	numVertices = 0;
+	vertices = nullptr;
+}
+
+Mesh::~Mesh()
+{
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glDeleteBuffers(1, &VBO);
+	//RELEASE(vertices);
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glDeleteBuffers(1, &EBO);
+	//RELEASE(indices);
+}
+
+void Mesh::Initialize()
+{
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, vertices, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * numIndices, indices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+}
+
+void Mesh::Render() const
+{
+	// ClienState
+	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_NORMAL_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	// Vertices
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	// Normals
+	//glBindBuffer(GL_NORMAL_ARRAY, normalsBuf);
+	//glNormalPointer(GL_FLOAT, 0, NULL);
+
+	// Textures
+	//glBindBuffer(GL_ARRAY_BUFFER, textureBuf);
+	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	//glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// Indices
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
+	// VAO
+	glBindVertexArray(VAO);
+
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, NULL);
+
+	glBindVertexArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_NORMAL_ARRAY, 0);
+	//glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
 
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
+Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(MeshTypes::Primitive_Cube)
+{}
+
+Primitive::~Primitive()
 {}
 
 // ------------------------------------------------------------
-PrimitiveTypes Primitive::GetType() const
+MeshTypes Primitive::GetType() const
 {
 	return type;
 }
@@ -21,7 +100,7 @@ void Primitive::Render() const
 	glPushMatrix();
 	glMultMatrixf(transform.M);
 
-	if(axis == true)
+	if (axis == true)
 	{
 		// Draw Axis Grid
 		glLineWidth(2.0f);
@@ -30,23 +109,23 @@ void Primitive::Render() const
 
 		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-		glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);      glVertex3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(1.0f, 0.1f, 0.0f);      glVertex3f(1.1f, -0.1f, 0.0f);
+		glVertex3f(1.1f, 0.1f, 0.0f);	   glVertex3f(1.0f, -0.1f, 0.0f);
 
 		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);	   glVertex3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(-0.05f, 1.25f, 0.0f);   glVertex3f(0.0f, 1.15f, 0.0f);
+		glVertex3f(0.05f, 1.25f, 0.0f);	   glVertex3f(0.0f, 1.15f, 0.0f);
+		glVertex3f(0.0f, 1.15f, 0.0f);	   glVertex3f(0.0f, 1.05f, 0.0f);
 
 		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
 
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-		glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-		glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+		glVertex3f(0.0f, 0.0f, 0.0f);	   glVertex3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(-0.05f, 0.1f, 1.05f);   glVertex3f(0.05f, 0.1f, 1.05f);
+		glVertex3f(0.05f, 0.1f, 1.05f);    glVertex3f(-0.05f, -0.1f, 1.05f);
+		glVertex3f(-0.05f, -0.1f, 1.05f);  glVertex3f(0.05f, -0.1f, 1.05f);
 
 		glEnd();
 
@@ -55,12 +134,13 @@ void Primitive::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 
-	if(wire)
+	if (wire)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	InnerRender();
+	if (type != MeshTypes::Imported_Mesh)
+		InnerRender();
 
 	glPopMatrix();
 }
@@ -100,12 +180,12 @@ void Primitive::Scale(float x, float y, float z)
 // CUBE ============================================
 Cube::Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
 {
-	type = PrimitiveTypes::Primitive_Cube;
+	type = MeshTypes::Primitive_Cube;
 }
 
 Cube::Cube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
 {
-	type = PrimitiveTypes::Primitive_Cube;
+	type = MeshTypes::Primitive_Cube;
 }
 
 void Cube::InnerRender() const
@@ -158,12 +238,12 @@ void Cube::InnerRender() const
 // SPHERE ============================================
 Sphere::Sphere() : Primitive(), radius(1.0f)
 {
-	type = PrimitiveTypes::Primitive_Sphere;
+	type = MeshTypes::Primitive_Sphere;
 }
 
 Sphere::Sphere(float radius) : Primitive(), radius(radius)
 {
-	type = PrimitiveTypes::Primitive_Sphere;
+	type = MeshTypes::Primitive_Sphere;
 }
 
 void Sphere::InnerRender() const
@@ -175,7 +255,7 @@ void Sphere::InnerRender() const
 	for (j = 0; j < stacks; j++)
 	{
 		double lat1 = (M_PI / stacks) * j - M_PI / 2;
-		double lat2 = (M_PI / stacks) * (j + 1) - M_PI / 2;
+		double lat2 = (M_PI / stacks) * (double(j) + 1) - M_PI / 2;
 		double sinLat1 = sin(lat1);
 		double cosLat1 = cos(lat1);
 		double sinLat2 = sin(lat2);
@@ -201,16 +281,15 @@ void Sphere::InnerRender() const
 	}
 }
 
-
 // CYLINDER ============================================
 Cylinder::Cylinder() : Primitive(), radius(1.0f), height(1.0f)
 {
-	type = PrimitiveTypes::Primitive_Cylinder;
+	type = MeshTypes::Primitive_Cylinder;
 }
 
 Cylinder::Cylinder(float radius, float height) : Primitive(), radius(radius), height(height)
 {
-	type = PrimitiveTypes::Primitive_Cylinder;
+	type = MeshTypes::Primitive_Cylinder;
 }
 
 void Cylinder::InnerRender() const
@@ -252,12 +331,12 @@ void Cylinder::InnerRender() const
 // LINE ==================================================
 Line::Line() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
 {
-	type = PrimitiveTypes::Primitive_Line;
+	type = MeshTypes::Primitive_Line;
 }
 
 Line::Line(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
 {
-	type = PrimitiveTypes::Primitive_Line;
+	type = MeshTypes::Primitive_Line;
 }
 
 void Line::InnerRender() const
@@ -277,12 +356,12 @@ void Line::InnerRender() const
 // PLANE ==================================================
 Plane::Plane() : Primitive(), normal(0, 1, 0), constant(1)
 {
-	type = PrimitiveTypes::Primitive_Plane;
+	type = MeshTypes::Primitive_Plane;
 }
 
 Plane::Plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
 {
-	type = PrimitiveTypes::Primitive_Plane;
+	type = MeshTypes::Primitive_Plane;
 }
 
 void Plane::InnerRender() const
@@ -307,12 +386,12 @@ void Plane::InnerRender() const
 // PYRAMID ================================================
 Pyramid::Pyramid() : Primitive(), base(1.0f, 1.0f), height(1.0f)
 {
-	type = PrimitiveTypes::Primitive_Pyramid;
+	type = MeshTypes::Primitive_Pyramid;
 }
 
 Pyramid::Pyramid(float baseX, float baseZ, float height) : Primitive(), base(baseX, baseZ), height(height)
 {
-	type = PrimitiveTypes::Primitive_Pyramid;
+	type = MeshTypes::Primitive_Pyramid;
 }
 
 void Pyramid::InnerRender() const
@@ -323,7 +402,7 @@ void Pyramid::InnerRender() const
 
 	glBegin(GL_QUADS);
 
-	//Base
+	// Base
 	glNormal3f(0.0f, 0.0f, -1.0f);
 	glVertex3f(-bx, -sh, bz);
 	glVertex3f(bx, -sh, bz);
@@ -334,8 +413,7 @@ void Pyramid::InnerRender() const
 
 	glBegin(GL_TRIANGLES);
 
-	//Faces
-
+	// Faces
 	float ang = atan(height / bz);
 	glNormal3f(0.0f, ang, ang);
 
@@ -366,32 +444,4 @@ void Pyramid::InnerRender() const
 	glVertex3f(-bx, -sh, -bz);
 	glVertex3f(-bx, -sh, bz);
 	glEnd();
-}
-
-
-
-
-
-// CUSTOM MESH ============================================
-CustomMesh::CustomMesh() : Primitive()
-{
-	type = PrimitiveTypes::Custom_Mesh;
-}/*
-
-CustomMesh::CustomMesh(PrimitiveData* _data) : Primitive(), data(_data)
-{
-	type = PrimitiveTypes::Custom_Mesh;
-}*/
-
-void CustomMesh::InnerRender() const
-{
-	
-	glBindBuffer(GL_ARRAY_BUFFER, data->id_vertex);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,data->id_index);
-	
-	glDrawElements(GL_TRIANGLES, data->num_index, GL_UNSIGNED_INT, 0);
-
-	
-
 }

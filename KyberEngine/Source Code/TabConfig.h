@@ -16,7 +16,7 @@ public:
 	void UpdateFrameInfo(float framerate, float frametime);
 
 private:
-	std::vector<float> fpsLog;
+	std::vector<float> framerateLog;
 	std::vector<float> frametimeLog;
 
 };

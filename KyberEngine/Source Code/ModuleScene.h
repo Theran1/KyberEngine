@@ -2,10 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
-
-class Pyramid;
-class Cube;
-class CustomMesh;
+class Mesh;
 
 class ModuleScene : public Module
 {
@@ -15,12 +12,9 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
-	update_status PostUpdate();
+	update_status PostUpdate(float dt);
 	bool CleanUp();
 
 public:
-	Cube* c;
-	Pyramid* pyd;
-	std::vector<CustomMesh*> customMeshes;
-	
+	//std::vector<Mesh*> meshList;
 };

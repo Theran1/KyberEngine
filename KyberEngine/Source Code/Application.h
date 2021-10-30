@@ -11,6 +11,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleGuiManager.h"
 #include "ModuleScene.h"
+#include "ModuleAssImp.h"
 
 class Application
 {
@@ -42,6 +43,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleGuiManager* guiManager;
+	ModuleAssImp* assetsImporter;
 
 private:
 
@@ -51,7 +53,7 @@ private:
 
 private:
 
-	// Timing measures
+	// Framerate & Frametime
 	uint frameCount;
 	float dt;
 	uint fpsCap;

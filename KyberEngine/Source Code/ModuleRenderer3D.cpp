@@ -1,7 +1,7 @@
 #include "ModuleRenderer3D.h"
 #include "Application.h"
 
-
+#include "Primitive.h"
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -18,13 +18,13 @@ bool ModuleRenderer3D::Init()
 	bool ret = true;
 
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-
 
 	// Create context
 	context = SDL_GL_CreateContext(App->window->window);
@@ -32,6 +32,25 @@ bool ModuleRenderer3D::Init()
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
+	}
+
+	// Initialize Glew
+	if (ret)
+	{
+		GLenum error = glewInit();
+		if (error != GLEW_OK)
+		{
+			LOG("Glew Init failed, something is seriously wrong! Error: %s", glewGetErrorString(error));
+			ret = false;
+		}
+		else
+		{
+			LOG("Using Glew: %s", glewGetString(GLEW_VERSION));
+			LOG("Vendor: %s", glGetString(GL_VENDOR));
+			LOG("Renderer: %s", glGetString(GL_RENDERER));
+			LOG("OpenGL version supported: %s", glGetString(GL_VERSION));
+			LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		}
 	}
 
 	if (ret == true)
@@ -70,6 +89,8 @@ bool ModuleRenderer3D::Init()
 		// Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		// Check for error
 		error = glGetError();
 		if (error != GL_NO_ERROR)
@@ -107,36 +128,6 @@ bool ModuleRenderer3D::Init()
 	return ret;
 }
 
-
-
-bool ModuleRenderer3D::InitMeshes(std::vector<Primitive*> list)
-{
-	std::vector<Primitive*>::iterator item = list.begin();
-
-	while (item != list.end())
-	{
-		if ((*item)->GetType() == PrimitiveTypes::Custom_Mesh)
-		{
-			CustomMesh* i = (CustomMesh*)(*item);
-			glGenBuffers(1, &i->data->id_vertex);
-			glGenBuffers(1, &i->data->id_index);
-
-			glBindBuffer(GL_ARRAY_BUFFER, i->data->id_vertex);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * i->data->num_vertex * 3, i->data->vertices, GL_STATIC_DRAW);
-
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i->data->id_index);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * i->data->num_index, i->data->indices, GL_STATIC_DRAW);
-		}
-		++item;
-	}
-
-	return true;
-}
-
-
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
@@ -155,29 +146,22 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	// light 0 on cam pos
 	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
-	for(uint i = 0; i < MAX_LIGHTS; ++i)
+	for (uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	//Plane p(0, 1, 0, 0);
+	//p.axis = true;
+	//p.Render();
 
-
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
-
-	Cube* c = new Cube(1, 1, 1);
-	c->SetPos(-2, 0, 0);
-	c->Render();
-	//c = new Cube(1, 1, 1);
-	//c->SetPos(-2, 0, 0);
-
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	SDL_GL_SwapWindow(App->window->window);
-	return UPDATE_CONTINUE;
+
+	return update_status::UPDATE_CONTINUE;
 }
 
 // Called before quitting
@@ -202,8 +186,6 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
-
-
 
 bool ModuleRenderer3D::GetVSync()
 {
@@ -278,21 +260,4 @@ void ModuleRenderer3D::ToggleTexture2D()
 bool ModuleRenderer3D::IsTexture2D()
 {
 	return texture2D;
-}
-
-void ModuleRenderer3D::AddPrimitive(Primitive* p)
-{
-	listPrimitives.push_back(p);
-}
-
-void ModuleRenderer3D::Render()
-{
-	std::vector<Primitive*>::iterator item = listPrimitives.begin();
-
-	while (item != listPrimitives.end())
-	{
-		(*item)->wire = wireframe;
-		(*item)->Render();
-		++item;
-	}
 }

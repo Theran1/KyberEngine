@@ -1,7 +1,7 @@
 #include "TabConfig.h"
 #include "Application.h"
 
-TabConfig::TabConfig(Application* app) : Tab(app), fpsLog(FPS_LOG_SIZE), frametimeLog(FPS_LOG_SIZE)
+TabConfig::TabConfig(Application* app) : Tab(app), framerateLog(FPS_LOG_SIZE), frametimeLog(FPS_LOG_SIZE)
 {}
 
 TabConfig::~TabConfig()
@@ -37,8 +37,8 @@ update_status TabConfig::Update()
 		ImGui::TextColored(IMGUI_YELLOW, "%i", app->GetFramerateLimit());
 
 		char title[25];
-		sprintf_s(title, 25, "Framerate: %.1f FPS", fpsLog[fpsLog.size() - 1]);
-		ImGui::PlotHistogram("##framerate", &fpsLog[0], fpsLog.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+		sprintf_s(title, 25, "Framerate: %.1f FPS", framerateLog[framerateLog.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &framerateLog[0], framerateLog.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 
 		sprintf_s(title, 25, "Frametime: %0.1f ms", frametimeLog[frametimeLog.size() - 1]);
 		ImGui::PlotHistogram("##frametime", &frametimeLog[0], frametimeLog.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
@@ -113,13 +113,13 @@ void TabConfig::UpdateFrameInfo(float framerate, float frametime)
 	{
 		for (uint i = 0; i < 100 - 1; ++i)
 		{
-			fpsLog[i] = fpsLog[i + 1];
+			framerateLog[i] = framerateLog[i + 1];
 			frametimeLog[i] = frametimeLog[i + 1];
 		}
 	}
 	else
 		++count;
 
-	fpsLog[count - 1] = framerate;
+	framerateLog[count - 1] = framerate;
 	frametimeLog[count - 1] = frametime;
 }
