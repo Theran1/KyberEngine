@@ -1,9 +1,6 @@
 #include "TabConfig.h"
 #include "Application.h"
 
-#define GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX 0x9048
-#define GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX 0x9049
-
 TabConfig::TabConfig(Application* app) : Tab(app), framerateLog(FPS_LOG_SIZE), frametimeLog(FPS_LOG_SIZE)
 {}
 
@@ -110,15 +107,20 @@ update_status TabConfig::Update()
 		// VRAM in KB
 		GLint sizeVRAM = 0;
 		GLint availableVRAM = 0;
-		glGetIntegerv(GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX, &sizeVRAM);
-		glGetIntegerv(GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX, &availableVRAM);
+		GLint dedicatedVRAM = 0;
+
+		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &sizeVRAM);
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &availableVRAM);
+		glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &dedicatedVRAM);
 		// VRAM in KB to MB
 		sizeVRAM /= 1000;
 		availableVRAM /= 1000;
-
+		dedicatedVRAM /= 1000;
+		
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Size:", "%d MB", sizeVRAM);
-		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Usage:", "%d MB", (sizeVRAM - availableVRAM));
+		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Usage:", "%d MB", sizeVRAM - availableVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Available:", "%d MB", availableVRAM);
+		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Dedicated:", "%d MB", dedicatedVRAM);
 	}
 	ImGui::End();
 
