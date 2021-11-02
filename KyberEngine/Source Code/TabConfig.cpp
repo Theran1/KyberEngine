@@ -68,7 +68,7 @@ update_status TabConfig::Update()
 
 		ImGui::Text("Refresh rate:");
 		ImGui::SameLine();
-		ImGui::TextColored(IMGUI_GREEN, "%u", app->window->GetRefreshRate());
+		ImGui::TextColored(IMGUI_GREEN, "%u Hz", app->window->GetRefreshRate());
 
 		ImGui::Separator();
 
@@ -76,6 +76,7 @@ update_status TabConfig::Update()
 		if (ImGui::Checkbox("Fullscreen", &fullscreen))
 			app->window->SetFullscreen(fullscreen);
 
+		ImGui::SameLine();
 		bool resizable = app->window->GetResizable();
 		if (ImGui::Checkbox("Resizable", &resizable))
 			app->window->SetResizable(resizable);
@@ -84,6 +85,7 @@ update_status TabConfig::Update()
 		if (ImGui::Checkbox("Borderless", &borderless))
 			app->window->SetBorderless(borderless);
 
+		ImGui::SameLine();
 		bool fullscreenDesktop = app->window->GetFullscreenDesktop();
 		if (ImGui::Checkbox("Fullscreen Desktop", &fullscreenDesktop))
 			app->window->SetFullscreenDesktop(fullscreenDesktop);
@@ -98,6 +100,18 @@ update_status TabConfig::Update()
 
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "CPUs:", "%d (Cache: %u KB)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "System RAM:", "%.1f GB", float(SDL_GetSystemRAM() / 1024.0f));
+		IMGUI_COLOR_PARAM(IMGUI_GREEN, "Caps: ", "%s%s%s%s%s%s%s%s%s%s%s",
+			SDL_HasAVX() ? "AVX," : "",
+			SDL_HasAVX2() ? "AVX2," : "",
+			SDL_HasMMX() ? "MMX," : "",
+			SDL_HasRDTSC() ? "RDTSC," : "",
+			SDL_HasSSE() ? "SSE," : "",
+			SDL_HasSSE2() ? "SSE2," : "",
+			SDL_HasSSE3() ? "SSE3," : "",
+			SDL_HasSSE41() ? "SSE4.1," : "",
+			SDL_HasSSE42() ? "SSE4.2," : "",
+			SDL_Has3DNow() ? "3DNow!," : "",
+			SDL_HasAltiVec() ? "AltiVec" : "");
 
 		ImGui::Separator();
 
@@ -107,20 +121,16 @@ update_status TabConfig::Update()
 		// VRAM in KB
 		GLint sizeVRAM = 0;
 		GLint availableVRAM = 0;
-		GLint dedicatedVRAM = 0;
 
 		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &sizeVRAM);
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &availableVRAM);
-		glGetIntegerv(GL_GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &dedicatedVRAM);
 		// VRAM in KB to MB
 		sizeVRAM /= 1000;
 		availableVRAM /= 1000;
-		dedicatedVRAM /= 1000;
 		
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Size:", "%d MB", sizeVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Usage:", "%d MB", sizeVRAM - availableVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Available:", "%d MB", availableVRAM);
-		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Dedicated:", "%d MB", dedicatedVRAM);
 	}
 	ImGui::End();
 
