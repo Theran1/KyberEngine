@@ -18,7 +18,6 @@ public:
 private:
 	std::vector<float> framerateLog;
 	std::vector<float> frametimeLog;
-
 };
 
 #endif // __TAB_CONFIG_H__
