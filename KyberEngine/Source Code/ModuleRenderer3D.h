@@ -52,6 +52,7 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+
 private:
 	bool vSync = false;
 	bool wireframe = false;

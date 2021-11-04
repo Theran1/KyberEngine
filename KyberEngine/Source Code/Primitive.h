@@ -3,6 +3,11 @@
 #include "Color.h"
 #include "Globals.h"
 
+
+#define CHECKERS_HEIGHT 128
+#define CHECKERS_WIDTH 128
+
+
 enum class MeshTypes
 {
 	Imported_Mesh,
@@ -25,6 +30,9 @@ public:
 
 	void Render() const;
 
+
+	void CreateCheckerTexture();
+
 public:
 	// Vertex Buffer Object (VBO)
 	uint VBO = 0;
@@ -38,6 +46,22 @@ public:
 	uint EBO = 0;
 	uint numIndices = 0;
 	uint* indices = nullptr;
+
+	//textures Coords
+	uint textureBuffer = -1;
+	uint textureCordID;
+	float* textureCords;
+
+	//Normals
+
+	//textures Coords
+	uint normalsBuffer = -1;
+	float* normalsCords;
+
+
+
+	//checker texture
+	uint checkerTextureID;
 };
 
 class Primitive
@@ -54,12 +78,15 @@ public:
 	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
 
+
 	MeshTypes		GetType() const;
 
 public:
 	Color color;
 	mat4x4 transform;
 	bool axis, wire;
+
+
 
 protected:
 	MeshTypes type;

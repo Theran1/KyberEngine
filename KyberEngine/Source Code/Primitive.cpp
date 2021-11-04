@@ -16,13 +16,13 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glDeleteBuffers(1, &VBO);
-	//RELEASE(vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDeleteBuffers(1, &VBO);
+	RELEASE(vertices);
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//glDeleteBuffers(1, &EBO);
-	//RELEASE(indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDeleteBuffers(1, &EBO);
+	RELEASE(indices);
 }
 
 void Mesh::Initialize()
@@ -38,47 +38,71 @@ void Mesh::Initialize()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * numIndices, indices, GL_STATIC_DRAW);
 
+
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &textureBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 2, textureCords, GL_STATIC_DRAW);
+
+
+	glGenBuffers(1, &normalsBuffer);
+	glBindBuffer(GL_NORMAL_ARRAY, normalsBuffer);
+	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * numVertices * 3, normalsCords, GL_STATIC_DRAW);
+
+
+
+	CreateCheckerTexture();
 }
 
 void Mesh::Render() const
 {
 	// ClienState
 	glEnableClientState(GL_VERTEX_ARRAY);
-	//glEnableClientState(GL_NORMAL_ARRAY);
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	// Vertices
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	// Normals
-	//glBindBuffer(GL_NORMAL_ARRAY, normalsBuf);
-	//glNormalPointer(GL_FLOAT, 0, NULL);
+	 //Normals
+	glBindBuffer(GL_NORMAL_ARRAY, normalsBuffer);
+	glNormalPointer(GL_FLOAT, 0, NULL);
 
-	// Textures
-	//glBindBuffer(GL_ARRAY_BUFFER, textureBuf);
-	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-	//glBindTexture(GL_TEXTURE_2D, textureID);
+	 //Textures
+	glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	glBindTexture(GL_TEXTURE_2D, textureCordID);
+	
+	
 
 	// Indices
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-	// VAO
-	glBindVertexArray(VAO);
+	//// VAO
+	//glBindVertexArray(VAO);
+
+
+	//Test Image
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, checkerTextureID);
+
 
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, NULL);
 
 	glBindVertexArray(0);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_NORMAL_ARRAY, 0);
-	//glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_NORMAL_ARRAY, 0);
+	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glPopMatrix();
 
 	glDisableClientState(GL_VERTEX_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
 // ------------------------------------------------------------
@@ -357,11 +381,13 @@ void Line::InnerRender() const
 Plane::Plane() : Primitive(), normal(0, 1, 0), constant(1)
 {
 	type = MeshTypes::Primitive_Plane;
+	color = White;
 }
 
 Plane::Plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
 {
 	type = MeshTypes::Primitive_Plane;
+	color = White;
 }
 
 void Plane::InnerRender() const
@@ -444,4 +470,36 @@ void Pyramid::InnerRender() const
 	glVertex3f(-bx, -sh, -bz);
 	glVertex3f(-bx, -sh, bz);
 	glEnd();
+}
+
+
+
+
+
+void Mesh::CreateCheckerTexture()
+{
+	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
+		for (int j = 0; j < CHECKERS_WIDTH; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkerImage[i][j][0] = (GLubyte)c;
+			checkerImage[i][j][1] = (GLubyte)c;
+			checkerImage[i][j][2] = (GLubyte)c;
+			checkerImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &checkerTextureID);
+	glBindTexture(GL_TEXTURE_2D, checkerTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

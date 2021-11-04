@@ -122,6 +122,8 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_TEXTURE_2D);
 	}
 
+	
+
 	// Projection matrix for
 	OnResize(App->window->GetWindowWidth(), App->window->GetWindowHeight());
 
@@ -149,9 +151,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
-	//Plane p(0, 1, 0, 0);
-	//p.axis = true;
-	//p.Render();
+	Plane p(0, 1, 0, 0);
+	p.axis = true;
+	p.Render();
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -261,3 +263,6 @@ bool ModuleRenderer3D::IsTexture2D()
 {
 	return texture2D;
 }
+
+
+
