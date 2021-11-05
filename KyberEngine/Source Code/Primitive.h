@@ -3,10 +3,8 @@
 #include "Color.h"
 #include "Globals.h"
 
-
 #define CHECKERS_HEIGHT 128
 #define CHECKERS_WIDTH 128
-
 
 enum class MeshTypes
 {
@@ -30,7 +28,7 @@ public:
 
 	void Render() const;
 
-
+	uint CreateTexture(const char* path);
 	void CreateCheckerTexture();
 
 public:
@@ -40,27 +38,23 @@ public:
 	float* vertices = nullptr;
 
 	// Vertex Array Object (VAO)
-	uint VAO = 0;
+	//uint VAO = 0;
 
 	// Element Buffer Object (EBO)
 	uint EBO = 0;
 	uint numIndices = 0;
 	uint* indices = nullptr;
 
-	//textures Coords
-	uint textureBuffer = -1;
-	uint textureCordID;
-	float* textureCords;
+	// Normals
+	uint normalsBuffer = 0;
+	float* normals = nullptr;
 
-	//Normals
+	// Textures Coords
+	uint textureBuffer = 0;
+	float* textureCoords = nullptr;
+	uint textureID = 0;
 
-	//textures Coords
-	uint normalsBuffer = -1;
-	float* normalsCords;
-
-
-
-	//checker texture
+	// Checker texture
 	uint checkerTextureID;
 };
 
@@ -78,15 +72,12 @@ public:
 	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
 
-
 	MeshTypes		GetType() const;
 
 public:
 	Color color;
 	mat4x4 transform;
 	bool axis, wire;
-
-
 
 protected:
 	MeshTypes type;

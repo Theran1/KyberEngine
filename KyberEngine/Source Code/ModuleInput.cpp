@@ -84,21 +84,21 @@ update_status ModuleInput::PreUpdate(float dt)
 	mouseXMotion = mouseYMotion = 0;
 
 	bool quit = false;
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
 	{
-		switch (e.type)
+		switch (event.type)
 		{
 		case SDL_MOUSEWHEEL:
-			mouseZ = e.wheel.y;
+			mouseZ = event.wheel.y;
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouseX = e.motion.x / SCREEN_SIZE;
-			mouseY = e.motion.y / SCREEN_SIZE;
+			mouseX = event.motion.x / SCREEN_SIZE;
+			mouseY = event.motion.y / SCREEN_SIZE;
 
-			mouseXMotion = e.motion.xrel / SCREEN_SIZE;
-			mouseYMotion = e.motion.yrel / SCREEN_SIZE;
+			mouseXMotion = event.motion.xrel / SCREEN_SIZE;
+			mouseYMotion = event.motion.yrel / SCREEN_SIZE;
 			break;
 
 		case SDL_QUIT:
@@ -107,8 +107,19 @@ update_status ModuleInput::PreUpdate(float dt)
 
 		case SDL_WINDOWEVENT:
 		{
-			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
-				App->renderer3D->OnResize(e.window.data1, e.window.data2);
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+				App->renderer3D->OnResize(event.window.data1, event.window.data2);
+			break;
+		}
+		case SDL_DROPFILE:
+		{
+			std::string filePath;
+			filePath.assign(event.drop.file);
+			if (!filePath.empty())
+			{
+				if (filePath.find(".fbx") != std::string::npos)
+					App->assetsImporter->LoadMesh(filePath.c_str());
+			}
 		}
 		}
 	}

@@ -1,17 +1,29 @@
 #include "Primitive.h"
 #include "RendererGlobals.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "External/STB/stb_image.h"
+
 Mesh::Mesh()
 {
-	EBO = 0;
-	numIndices = 0;
-	indices = nullptr;
-	
-	VAO = 0;
-
 	VBO = 0;
 	numVertices = 0;
 	vertices = nullptr;
+
+	//VAO = 0;
+
+	EBO = 0;
+	numIndices = 0;
+	indices = nullptr;
+
+	normalsBuffer = 0;
+	normals = nullptr;
+
+	textureBuffer = 0;
+	textureCoords = nullptr;
+	textureID = 0;
+
+	checkerTextureID = 0;
 }
 
 Mesh::~Mesh()
@@ -23,12 +35,20 @@ Mesh::~Mesh()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDeleteBuffers(1, &EBO);
 	RELEASE(indices);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDeleteBuffers(1, &normalsBuffer);
+	RELEASE(normals);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDeleteBuffers(1, &textureBuffer);
+	RELEASE(textureCoords);
 }
 
 void Mesh::Initialize()
 {
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	//glGenVertexArrays(1, &VAO);
+	//glBindVertexArray(VAO);
 
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -37,28 +57,25 @@ void Mesh::Initialize()
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * numIndices, indices, GL_STATIC_DRAW);
-
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glGenBuffers(1, &textureBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 2, textureCords, GL_STATIC_DRAW);
-
+	RELEASE(indices);
 
 	glGenBuffers(1, &normalsBuffer);
-	glBindBuffer(GL_NORMAL_ARRAY, normalsBuffer);
-	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * numVertices * 3, normalsCords, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, normals, GL_STATIC_DRAW);
 
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//glEnableVertexAttribArray(0);
 
+	glGenBuffers(1, &textureBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, textureBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * numVertices * 2, textureCoords, GL_STATIC_DRAW);
+	RELEASE(textureCoords);
 
-	CreateCheckerTexture();
+	//CreateCheckerTexture();
 }
 
 void Mesh::Render() const
 {
-	// ClienState
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -67,32 +84,29 @@ void Mesh::Render() const
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	 //Normals
-	glBindBuffer(GL_NORMAL_ARRAY, normalsBuffer);
+	// Normals
+	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
-	 //Textures
+	// Coord
 	glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-	glBindTexture(GL_TEXTURE_2D, textureCordID);
-	
-	
+
+	// Checker Texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	//glBindTexture(GL_TEXTURE_2D, checkerTextureID);
+
+	// VAO
+	//glBindVertexArray(VAO);
 
 	// Indices
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
-	//// VAO
-	//glBindVertexArray(VAO);
-
-
-	//Test Image
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, checkerTextureID);
-
-
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, NULL);
 
-	glBindVertexArray(0);
+	// Unbind Buffers
+	//glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
 	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
@@ -102,7 +116,62 @@ void Mesh::Render() const
 	glPopMatrix();
 
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+uint Mesh::CreateTexture(const char* path)
+{
+	uint tmpTextureID;
+	int height;
+	int width;
+	int compPerPixel;
+	unsigned char* pixels = stbi_load(path, &width, &height, &compPerPixel, STBI_rgb);
+	GLint internalFormat = GL_RGBA;
+	if (compPerPixel == 3) internalFormat = GL_RGB;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &tmpTextureID);
+	glBindTexture(GL_TEXTURE_2D, tmpTextureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, pixels);
+
+	stbi_image_free(pixels);
+
+	return tmpTextureID;
+}
+
+void Mesh::CreateCheckerTexture()
+{
+	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
+	for (int i = 0; i < CHECKERS_HEIGHT; i++)
+	{
+		for (int j = 0; j < CHECKERS_WIDTH; j++)
+		{
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkerImage[i][j][0] = (GLubyte)c;
+			checkerImage[i][j][1] = (GLubyte)c;
+			checkerImage[i][j][2] = (GLubyte)c;
+			checkerImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &checkerTextureID);
+	glBindTexture(GL_TEXTURE_2D, checkerTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 // ------------------------------------------------------------
@@ -470,36 +539,4 @@ void Pyramid::InnerRender() const
 	glVertex3f(-bx, -sh, -bz);
 	glVertex3f(-bx, -sh, bz);
 	glEnd();
-}
-
-
-
-
-
-void Mesh::CreateCheckerTexture()
-{
-	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
-	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
-		for (int j = 0; j < CHECKERS_WIDTH; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checkerImage[i][j][0] = (GLubyte)c;
-			checkerImage[i][j][1] = (GLubyte)c;
-			checkerImage[i][j][2] = (GLubyte)c;
-			checkerImage[i][j][3] = (GLubyte)255;
-		}
-	}
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &checkerTextureID);
-	glBindTexture(GL_TEXTURE_2D, checkerTextureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT,
-		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }

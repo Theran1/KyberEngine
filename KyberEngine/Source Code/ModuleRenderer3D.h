@@ -58,7 +58,7 @@ private:
 	bool wireframe = false;
 	bool depthTest = true;
 	bool cullFace = true;
-	bool lighting = true;
+	bool lighting = false;
 	bool colorMaterial = true;
 	bool texture2D = true;
 };

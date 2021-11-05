@@ -30,7 +30,7 @@ bool ModuleAssImp::Init()
 
 bool ModuleAssImp::Start()
 {
-	LoadMesh("Assets/Meshes/bakerhouse.FBX");
+	LoadMesh("Assets/Meshes/baker_house.fbx");
 
 	return true;
 }
@@ -77,19 +77,17 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 						memcpy(&tmpMesh->indices[j * 3], scene->mMeshes[i]->mFaces[j].mIndices, sizeof(uint) * 3);
 					}
 				}
-
-
 			}
 
 			// Copying Texture coordinates
 			if (scene->mMeshes[i]->mTextureCoords != NULL)
 			{
-				tmpMesh->textureCords = new float[tmpMesh->numVertices * 2];
+				tmpMesh->textureCoords = new float[tmpMesh->numVertices * 2];
 
 				for (uint j = 0; j < tmpMesh->numVertices; j++)
 				{
-					tmpMesh->textureCords[j * 2] = scene->mMeshes[i]->mTextureCoords[0][j].x;
-					tmpMesh->textureCords[(j * 2) + 1] = scene->mMeshes[i]->mTextureCoords[0][j].y;
+					tmpMesh->textureCoords[j * 2] = scene->mMeshes[i]->mTextureCoords[0][j].x;
+					tmpMesh->textureCoords[(j * 2) + 1] = 1.0f - scene->mMeshes[i]->mTextureCoords[0][j].y;
 				}
 			}
 			else
@@ -100,13 +98,13 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 
 			if (scene->mMeshes[i]->mTextureCoords != NULL)
 			{
-				tmpMesh->normalsCords = new float[tmpMesh->numVertices * 3];
+				tmpMesh->normals = new float[tmpMesh->numVertices * 3];
 
 				for (uint j = 0; j < tmpMesh->numVertices; j++)
 				{
-					tmpMesh->normalsCords[j * 2] = scene->mMeshes[i]->mNormals[j].x;
-					tmpMesh->normalsCords[(j * 2) + 1] = scene->mMeshes[i]->mNormals[j].y;
-					tmpMesh->normalsCords[(j * 2) + 2] = scene->mMeshes[i]->mNormals[j].z;
+					tmpMesh->normals[j * 2] = scene->mMeshes[i]->mNormals[j].x;
+					tmpMesh->normals[(j * 2) + 1] = scene->mMeshes[i]->mNormals[j].y;
+					tmpMesh->normals[(j * 2) + 2] = scene->mMeshes[i]->mNormals[j].z;
 				}
 			}
 			else
@@ -114,6 +112,8 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 				LOG("Warning, No Normal coordinates found");
 			}
 
+			scene->mMaterials[0]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &aiString::aiString("Assets/Textures/baker_house.png"));
+			tmpMesh->textureID = tmpMesh->CreateTexture("Assets/Textures/baker_house.png");
 
 			tmpMesh->Initialize();
 			meshList.push_back(tmpMesh);
@@ -122,8 +122,4 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 	}
 	else
 		LOG("Error loading scene %s", filePath);
-
-
-
-
 }

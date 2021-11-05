@@ -127,7 +127,6 @@ update_status TabConfig::Update()
 		// VRAM in KB to MB
 		sizeVRAM /= 1000;
 		availableVRAM /= 1000;
-		
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Size:", "%d MB", sizeVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Usage:", "%d MB", sizeVRAM - availableVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Available:", "%d MB", availableVRAM);
