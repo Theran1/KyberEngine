@@ -120,6 +120,7 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE_2D);
+		glShadeModel(GL_SMOOTH);
 	}
 
 	// Projection matrix for

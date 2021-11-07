@@ -28,7 +28,6 @@ public:
 
 	void Render() const;
 
-	uint CreateTexture(const char* path);
 	void CreateCheckerTexture();
 
 public:

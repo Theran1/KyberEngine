@@ -8,6 +8,9 @@
 #include "scene.h"
 #include "postprocess.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 ModuleAssImp::ModuleAssImp(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -45,9 +48,9 @@ bool ModuleAssImp::CleanUp()
 	return true;
 }
 
-void ModuleAssImp::LoadMesh(const char* filePath)
+void ModuleAssImp::LoadMesh(const char* meshFilename)
 {
-	const aiScene* scene = aiImportFile(filePath, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile(meshFilename, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -91,9 +94,7 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 				}
 			}
 			else
-			{
 				LOG("Warning, No texture coordinates found");
-			}
 
 
 			if (scene->mMeshes[i]->mTextureCoords != NULL)
@@ -108,12 +109,10 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 				}
 			}
 			else
-			{
 				LOG("Warning, No Normal coordinates found");
-			}
 
 			scene->mMaterials[0]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &aiString::aiString("Assets/Textures/baker_house.png"));
-			tmpMesh->textureID = tmpMesh->CreateTexture("Assets/Textures/baker_house.png");
+			tmpMesh->textureID = LoadTexture("Assets/Textures/baker_house.png");
 
 			tmpMesh->Initialize();
 			meshList.push_back(tmpMesh);
@@ -121,5 +120,41 @@ void ModuleAssImp::LoadMesh(const char* filePath)
 		aiReleaseImport(scene);
 	}
 	else
-		LOG("Error loading scene %s", filePath);
+		LOG("Error loading scene %s", meshFilename);
+}
+
+uint ModuleAssImp::LoadTexture(const char* path)
+{
+	uint tmpTextureID;
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &tmpTextureID);
+	glBindTexture(GL_TEXTURE_2D, tmpTextureID);
+
+	// Set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	int height, width, compPerPixel;
+	unsigned char* textureData = stbi_load(path, &width, &height, &compPerPixel, STBI_rgb);
+	GLint internalFormat = GL_RGBA;
+	if (compPerPixel == 3) internalFormat = GL_RGB;
+
+	if (textureData)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, textureData);
+		//glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		LOG("Failed to create texture");
+	}
+
+	stbi_image_free(textureData);
+
+	return tmpTextureID;
 }

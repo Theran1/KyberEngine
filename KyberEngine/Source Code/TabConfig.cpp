@@ -46,7 +46,7 @@ update_status TabConfig::Update()
 	if (ImGui::CollapsingHeader("Window"))
 	{
 		float brightness = app->window->GetWindowBrightness();
-		if (ImGui::SliderFloat("Window Brightness", &brightness, 0.1f, 1.0f))
+		if (ImGui::SliderFloat("Window Brightness", &brightness, 0.3f, 1.0f))
 			app->window->SetWindowBrightness(brightness);
 
 		uint windowW = app->window->GetWindowWidth();

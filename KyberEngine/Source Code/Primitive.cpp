@@ -1,15 +1,13 @@
 #include "Primitive.h"
 #include "RendererGlobals.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "External/STB/stb_image.h"
-
 Mesh::Mesh()
 {
 	VBO = 0;
 	numVertices = 0;
 	vertices = nullptr;
 
+	// (FUTURE) We will need it for shaders
 	//VAO = 0;
 
 	EBO = 0;
@@ -36,7 +34,7 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &EBO);
 	RELEASE(indices);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_NORMAL_ARRAY, 0);
 	glDeleteBuffers(1, &normalsBuffer);
 	RELEASE(normals);
 
@@ -47,6 +45,7 @@ Mesh::~Mesh()
 
 void Mesh::Initialize()
 {
+	// (FUTURE) We will need it for shaders
 	//glGenVertexArrays(1, &VAO);
 	//glBindVertexArray(VAO);
 
@@ -60,9 +59,10 @@ void Mesh::Initialize()
 	RELEASE(indices);
 
 	glGenBuffers(1, &normalsBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * numVertices * 3, normals, GL_STATIC_DRAW);
+	glBindBuffer(GL_NORMAL_ARRAY, normalsBuffer);
+	glBufferData(GL_NORMAL_ARRAY, sizeof(float) * numVertices * 3, normals, GL_STATIC_DRAW);
 
+	// (FUTURE) We will need it for shaders
 	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	//glEnableVertexAttribArray(0);
 
@@ -85,7 +85,7 @@ void Mesh::Render() const
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	// Normals
-	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+	glBindBuffer(GL_NORMAL_ARRAY, normalsBuffer);
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
 	// Coord
@@ -97,6 +97,7 @@ void Mesh::Render() const
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	//glBindTexture(GL_TEXTURE_2D, checkerTextureID);
 
+	// (FUTURE) We will need it for shaders
 	// VAO
 	//glBindVertexArray(VAO);
 
@@ -106,7 +107,7 @@ void Mesh::Render() const
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, NULL);
 
 	// Unbind Buffers
-	//glBindVertexArray(0);
+	//glBindVertexArray(0); (FUTURE) We will need it for shaders
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_NORMAL_ARRAY, 0);
 	glBindBuffer(GL_TEXTURE_COORD_ARRAY, 0);
@@ -118,30 +119,6 @@ void Mesh::Render() const
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-}
-
-uint Mesh::CreateTexture(const char* path)
-{
-	uint tmpTextureID;
-	int height;
-	int width;
-	int compPerPixel;
-	unsigned char* pixels = stbi_load(path, &width, &height, &compPerPixel, STBI_rgb);
-	GLint internalFormat = GL_RGBA;
-	if (compPerPixel == 3) internalFormat = GL_RGB;
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &tmpTextureID);
-	glBindTexture(GL_TEXTURE_2D, tmpTextureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, internalFormat, GL_UNSIGNED_BYTE, pixels);
-
-	stbi_image_free(pixels);
-
-	return tmpTextureID;
 }
 
 void Mesh::CreateCheckerTexture()

@@ -14,7 +14,8 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	void LoadMesh(const char* filePath);
+	void LoadMesh(const char* meshFilename);
+	uint LoadTexture(const char* path);
 
 public:
 	std::vector<Mesh*> meshList;
