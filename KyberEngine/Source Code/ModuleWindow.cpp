@@ -7,8 +7,8 @@ ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, s
 	window = NULL;
 	screenSurface = NULL;
 
-	screenWidth = 1024;
-	screenHeight = 768;
+	screenWidth = 1600;
+	screenHeight = 900;
 	fullscreen = false;
 	resizable = true;
 	borderless = false;

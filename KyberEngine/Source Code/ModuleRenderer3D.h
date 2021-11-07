@@ -22,28 +22,29 @@ public:
 
 	void OnResize(int width, int height);
 
-	bool GetVSync();
-	void SetVSync(bool _vsync);
+	bool GetWireframe();
+	void ToggleWireframe();
 
-	bool IsDepthTest();
+	bool GetDepthTest();
 	void ToggleDepthTest();
 
-	bool IsCullFace();
+	bool GetCullFace();
 	void ToggleCullFace();
 
-	bool IsLighting();
+	bool GetLighting();
 	void ToggleLighting();
 
-	bool IsColorMaterial();
+	bool GetColorMaterial();
 	void ToggleColorMaterial();
 
-	bool IsTexture2D();
+	bool GetTexture2D();
 	void ToggleTexture2D();
 
-	const char* GetVideoDriver();
+	//bool GetVSync();
+	//void SetVSync(bool _vsync);
 
-	void ToggleWireframe();
-	bool IsWireframe();
+	bool GetUsingCheckerTexture() const;
+	void ToggleCheckerTexture();
 
 public:
 
@@ -52,13 +53,16 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-
 private:
-	bool vSync = false;
 	bool wireframe = false;
+
 	bool depthTest = true;
 	bool cullFace = true;
 	bool lighting = true;
 	bool colorMaterial = true;
 	bool texture2D = true;
+
+	//bool vSync = false;
+
+	bool usingCheckerTexture;
 };

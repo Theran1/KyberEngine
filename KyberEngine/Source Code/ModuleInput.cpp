@@ -108,7 +108,11 @@ update_status ModuleInput::PreUpdate(float dt)
 		case SDL_WINDOWEVENT:
 		{
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+			{
+				App->window->SetWindowWidth(event.window.data1);
+				App->window->SetWindowHeight(event.window.data2);
 				App->renderer3D->OnResize(event.window.data1, event.window.data2);
+			}
 			break;
 		}
 		case SDL_DROPFILE:
@@ -120,6 +124,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				if (filePath.find(".fbx") != std::string::npos)
 					App->assetsImporter->LoadMesh(filePath.c_str());
 			}
+			break;
 		}
 		}
 	}

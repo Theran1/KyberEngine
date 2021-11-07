@@ -8,7 +8,6 @@
 
 enum class MeshTypes
 {
-	Imported_Mesh,
 	Primitive_Point,
 	Primitive_Line,
 	Primitive_Plane,
@@ -26,9 +25,9 @@ public:
 
 	void Initialize();
 
-	void Render() const;
+	void Render(bool checkersTexture) const;
 
-	void CreateCheckerTexture();
+	uint CreateCheckerTexture();
 
 public:
 	// Vertex Buffer Object (VBO)

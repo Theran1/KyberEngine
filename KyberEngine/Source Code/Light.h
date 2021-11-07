@@ -11,6 +11,8 @@ struct Light
 	void Active(bool active);
 	void Render();
 
+	bool GetLight();
+
 	Color ambient;
 	Color diffuse;
 	vec3 position;

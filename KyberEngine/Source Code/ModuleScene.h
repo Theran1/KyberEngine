@@ -3,6 +3,7 @@
 #include "Globals.h"
 
 class Mesh;
+class Plane;
 
 class ModuleScene : public Module
 {
@@ -16,5 +17,8 @@ public:
 	bool CleanUp();
 
 public:
-	//std::vector<Mesh*> meshList;
+	std::vector<Mesh*> meshList;
+
+private:
+	Plane* scenePlane;
 };

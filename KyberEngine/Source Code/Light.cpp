@@ -2,7 +2,6 @@
 #include "RendererGlobals.h"
 #include "Light.h"
 
-
 Light::Light() : ref(-1), on(false), position(0.0f, 0.0f, 0.0f)
 {}
 
@@ -39,4 +38,9 @@ void Light::Active(bool active)
 		else
 			glDisable(ref);
 	}
+}
+
+bool Light::GetLight()
+{
+	return on;
 }

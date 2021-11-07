@@ -64,7 +64,7 @@ private:
 	Timer frametime;
 	Timer lastSecFramesTime;
 
-	std::list<Module*> listModules;
+	std::vector<Module*> listModules;
 
 	std::string appName;
 	std::string orgName;

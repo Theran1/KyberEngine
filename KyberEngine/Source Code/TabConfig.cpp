@@ -55,15 +55,22 @@ update_status TabConfig::Update()
 		app->window->GetScreenRes(screenResW, screenResH);
 
 		if (ImGui::SliderInt("Width", (int*)&windowW, 1024, screenResW))
+		{
 			app->window->SetWindowWidth(windowW);
+			app->renderer3D->OnResize(windowW, windowH);
+		}
 
 		if (ImGui::SliderInt("Height", (int*)&windowH, 768, screenResH))
+		{
 			app->window->SetWindowHeight(windowH);
+			app->renderer3D->OnResize(windowW,windowH);
+		}
 
 		if (ImGui::Button("Reset Window's Size"))
 		{
-			app->window->SetWindowWidth(1024);
-			app->window->SetWindowHeight(768);
+			app->window->SetWindowWidth(1600);
+			app->window->SetWindowHeight(900);
+			app->renderer3D->OnResize(1600, 900);
 		}
 
 		ImGui::Text("Refresh rate:");
@@ -130,6 +137,41 @@ update_status TabConfig::Update()
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Size:", "%d MB", sizeVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Usage:", "%d MB", sizeVRAM - availableVRAM);
 		IMGUI_COLOR_PARAM(IMGUI_GREEN, "VRAM Available:", "%d MB", availableVRAM);
+	}
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
+		bool depthTest = app->renderer3D->GetDepthTest();
+		if (ImGui::Checkbox("Depth Test", &depthTest))
+			app->renderer3D->ToggleDepthTest();
+		ImGui::SameLine();
+
+		bool cullFace = app->renderer3D->GetCullFace();
+		if (ImGui::Checkbox("Cull Face", &cullFace))
+			app->renderer3D->ToggleCullFace();
+		
+		bool lighting = app->renderer3D->GetLighting();
+		if (ImGui::Checkbox("Lighting  ", &lighting))
+			app->renderer3D->ToggleLighting();
+		ImGui::SameLine();
+
+		bool colorMaterial = app->renderer3D->GetColorMaterial();
+		if (ImGui::Checkbox("Color Material", &colorMaterial))
+			app->renderer3D->ToggleColorMaterial();
+
+		bool texture2D = app->renderer3D->GetTexture2D();
+		if (ImGui::Checkbox("Texture 2D", &texture2D))
+			app->renderer3D->ToggleTexture2D();
+		ImGui::SameLine();
+
+		bool lights = app->renderer3D->lights[0].GetLight();
+		if (ImGui::Checkbox("Directional Light", &lights))
+			app->renderer3D->lights[0].Active(lights);
+	}
+	if (ImGui::CollapsingHeader("Textures"))
+	{
+		bool checkerTexture = app->renderer3D->GetUsingCheckerTexture();
+		if (ImGui::Checkbox("Checker Texture", &checkerTexture))
+			app->renderer3D->ToggleCheckerTexture();
 	}
 	ImGui::End();
 

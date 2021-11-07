@@ -3,10 +3,11 @@
 #include "Application.h"
 
 #include "Primitive.h"
-#include "ModuleAssImp.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
-{}
+{
+	scenePlane = nullptr;
+}
 
 ModuleScene::~ModuleScene()
 {}
@@ -21,15 +22,12 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
+	scenePlane = new Plane(0, 1, 0, 0);
+	scenePlane->axis = true;
+
+	App->assetsImporter->LoadMesh("Assets/Meshes/baker_house.fbx");
+
 	return ret;
-}
-
-// Load assets
-bool ModuleScene::CleanUp()
-{
-	LOG("Unloading Intro scene");
-
-	return true;
 }
 
 // Update: draw background
@@ -38,20 +36,22 @@ update_status ModuleScene::Update(float dt)
 	return update_status::UPDATE_CONTINUE;
 }
 
-
 update_status ModuleScene::PostUpdate(float dt)
 {
-	for (std::vector<Mesh*>::iterator it = App->assetsImporter->meshList.begin(); it != App->assetsImporter->meshList.end(); ++it)
-		(*it)->Render();
+	scenePlane->Render();
 
-	//while (item != App->importer->listMesh.end())
-	//{
-	//	(*item)->wire = wireframe;
-	//	(*item)->drawFaceNormals = faceNormals;
-	//	(*item)->drawVertexNormals = vecNormals;
-	//	(*item)->Render();
-	//	++item;
-	//}
+	for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+		(*it)->Render(App->renderer3D->GetUsingCheckerTexture());
 
 	return update_status::UPDATE_CONTINUE;
+}
+
+// Unload assets
+bool ModuleScene::CleanUp()
+{
+	LOG("Unloading Intro scene");
+
+	RELEASE(scenePlane);
+
+	return true;
 }

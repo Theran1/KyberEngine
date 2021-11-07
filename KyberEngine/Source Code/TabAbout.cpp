@@ -53,19 +53,22 @@ update_status TabAbout::Update()
 
 	SDL_version sdlVersion;
 	SDL_GetVersion(&sdlVersion);
-	IMGUI_BULLET(IMGUI_WHITE, "SDL", "%i.%i.%i", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+	IMGUI_BULLET(IMGUI_RED, "SDL", "%i.%i.%i", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
 	ImGui::Spacing();
 
-	IMGUI_BULLET(IMGUI_WHITE, "OpenGL", "%s", glGetString(GL_VERSION));
+	IMGUI_BULLET(IMGUI_RED, "OpenGL", "%s", glGetString(GL_VERSION));
 	ImGui::Spacing();
 
-	IMGUI_BULLET(IMGUI_WHITE, "Glew", "%s", glewGetString(GLEW_VERSION));
+	IMGUI_BULLET(IMGUI_RED, "Glew", "%s", glewGetString(GLEW_VERSION));
 	ImGui::Spacing();
 
-	IMGUI_BULLET(IMGUI_WHITE, "ImGui", "%s", ImGui::GetVersion());
+	IMGUI_BULLET(IMGUI_RED, "ImGui", "%s", ImGui::GetVersion());
 	ImGui::Spacing();
 
-	IMGUI_BULLET(IMGUI_WHITE, "Assimp", "%i.%i.%i", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+	IMGUI_BULLET(IMGUI_RED, "Assimp", "%i.%i.%i", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+	ImGui::Spacing();
+
+	IMGUI_BULLET(IMGUI_RED, "stb_image", "2.27");
 
 	ImGui::Spacing();
 	ImGui::Spacing();
@@ -73,7 +76,7 @@ update_status TabAbout::Update()
 	ImGui::Spacing();
 	ImGui::Spacing();
 
-	ImGui::TextColored(IMGUI_YELLOW, "MIT License");
+	ImGui::TextColored(IMGUI_BLUE, "MIT License");
 	ImGui::Spacing();
 	ImGui::Spacing();
 	ImGui::Text("Copyright (c) 2021 Theran1 yeraytm");

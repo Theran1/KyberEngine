@@ -41,7 +41,7 @@ Application::Application()
 
 Application::~Application()
 {
-	for (std::list<Module*>::reverse_iterator it = listModules.rbegin(); it != listModules.rend(); ++it)
+	for (std::vector<Module*>::reverse_iterator it = listModules.rbegin(); it != listModules.rend(); ++it)
 	{
 		RELEASE(*it);
 	}
@@ -52,7 +52,7 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret; ++it)
+	for (std::vector<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret; ++it)
 	{
 		ret = (*it)->Init();
 	}
@@ -60,7 +60,7 @@ bool Application::Init()
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
 	
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret; ++it)
+	for (std::vector<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret; ++it)
 	{
 		ret = (*it)->Start();
 	}
@@ -114,17 +114,17 @@ update_status Application::Update()
 	update_status ret = update_status::UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
+	for (std::vector<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 	{
 		ret = (*it)->PreUpdate(dt);
 	}
 
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
+	for (std::vector<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 	{
 		ret = (*it)->Update(dt);
 	}
 
-	for (std::list<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
+	for (std::vector<Module*>::iterator it = listModules.begin(); it != listModules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 	{
 		ret = (*it)->PostUpdate(dt);
 	}
@@ -138,7 +138,7 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for (std::list<Module*>::reverse_iterator it = listModules.rbegin(); it != listModules.rend() && ret; ++it)
+	for (std::vector<Module*>::reverse_iterator it = listModules.rbegin(); it != listModules.rend() && ret; ++it)
 	{
 		ret = (*it)->CleanUp();
 	}

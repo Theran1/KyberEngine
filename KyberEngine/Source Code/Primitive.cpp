@@ -21,7 +21,7 @@ Mesh::Mesh()
 	textureCoords = nullptr;
 	textureID = 0;
 
-	checkerTextureID = 0;
+	//checkerTextureID = 0;
 }
 
 Mesh::~Mesh()
@@ -70,11 +70,9 @@ void Mesh::Initialize()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, textureBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * numVertices * 2, textureCoords, GL_STATIC_DRAW);
 	RELEASE(textureCoords);
-
-	//CreateCheckerTexture();
 }
 
-void Mesh::Render() const
+void Mesh::Render(bool checkersTexture) const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -92,10 +90,12 @@ void Mesh::Render() const
 	glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	// Checker Texture
+	// Texture
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	//glBindTexture(GL_TEXTURE_2D, checkerTextureID);
+	if (!checkersTexture)
+		glBindTexture(GL_TEXTURE_2D, textureID);
+	else
+		glBindTexture(GL_TEXTURE_2D, checkerTextureID);
 
 	// (FUTURE) We will need it for shaders
 	// VAO
@@ -121,7 +121,7 @@ void Mesh::Render() const
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-void Mesh::CreateCheckerTexture()
+uint Mesh::CreateCheckerTexture()
 {
 	GLubyte checkerImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	for (int i = 0; i < CHECKERS_HEIGHT; i++)
@@ -149,6 +149,8 @@ void Mesh::CreateCheckerTexture()
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkerImage);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return checkerTextureID;
 }
 
 // ------------------------------------------------------------
@@ -209,8 +211,7 @@ void Primitive::Render() const
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	if (type != MeshTypes::Imported_Mesh)
-		InnerRender();
+	InnerRender();
 
 	glPopMatrix();
 }

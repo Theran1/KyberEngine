@@ -5,6 +5,15 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	wireframe = false;
+
+	depthTest = true;
+	cullFace = true;
+	lighting = true;
+	colorMaterial = true;
+	texture2D = true;
+
+	usingCheckerTexture = false;
 }
 
 // Destructor
@@ -114,12 +123,14 @@ bool ModuleRenderer3D::Init()
 		GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
-		glEnable(GL_TEXTURE_2D);
+
+		depthTest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+		cullFace ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+		lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		colorMaterial ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+		texture2D ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+
 		glShadeModel(GL_SMOOTH);
 	}
 
@@ -133,11 +144,6 @@ bool ModuleRenderer3D::Init()
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	depthTest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
-	cullFace ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-	lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
-	colorMaterial ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
-	texture2D ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 
 	glLoadIdentity();
 
@@ -149,10 +155,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -186,21 +188,14 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	App->window->SetWindowWidth(width);
+	App->window->SetWindowHeight(height);
 }
 
-bool ModuleRenderer3D::GetVSync()
+bool ModuleRenderer3D::GetWireframe()
 {
-	return vSync;
-}
-
-void ModuleRenderer3D::SetVSync(bool _vsync)
-{
-	vSync = _vsync;
-}
-
-const char* ModuleRenderer3D::GetVideoDriver()
-{
-	return SDL_GetCurrentVideoDriver();
+	return wireframe;
 }
 
 void ModuleRenderer3D::ToggleWireframe()
@@ -208,60 +203,77 @@ void ModuleRenderer3D::ToggleWireframe()
 	wireframe = !wireframe;
 }
 
-bool ModuleRenderer3D::IsWireframe()
+bool ModuleRenderer3D::GetDepthTest()
 {
-	return wireframe;
+	return depthTest;
 }
 
 void ModuleRenderer3D::ToggleDepthTest()
 {
 	depthTest = !depthTest;
+	depthTest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
 
-bool ModuleRenderer3D::IsDepthTest()
+bool ModuleRenderer3D::GetCullFace()
 {
-	return depthTest;
+	return cullFace;
 }
 
 void ModuleRenderer3D::ToggleCullFace()
 {
 	cullFace = !cullFace;
+	cullFace ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
 }
 
-bool ModuleRenderer3D::IsCullFace()
+bool ModuleRenderer3D::GetLighting()
 {
-	return cullFace;
+	return lighting;
 }
 
 void ModuleRenderer3D::ToggleLighting()
 {
 	lighting = !lighting;
+	lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
 }
 
-bool ModuleRenderer3D::IsLighting()
+bool ModuleRenderer3D::GetColorMaterial()
 {
-	return lighting;
+	return colorMaterial;
 }
 
 void ModuleRenderer3D::ToggleColorMaterial()
 {
 	colorMaterial = !colorMaterial;
+	colorMaterial ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
 }
 
-bool ModuleRenderer3D::IsColorMaterial()
+bool ModuleRenderer3D::GetTexture2D()
 {
-	return colorMaterial;
+	return texture2D;
 }
 
 void ModuleRenderer3D::ToggleTexture2D()
 {
 	texture2D = !texture2D;
+	texture2D ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 }
 
-bool ModuleRenderer3D::IsTexture2D()
+//bool ModuleRenderer3D::GetVSync()
+//{
+//	return vSync;
+//}
+
+//void ModuleRenderer3D::SetVSync(bool _vsync)
+//{
+//	vSync = _vsync;
+//}
+
+bool ModuleRenderer3D::GetUsingCheckerTexture() const
 {
-	return texture2D;
+	return usingCheckerTexture;
 }
 
-
-
+void ModuleRenderer3D::ToggleCheckerTexture()
+{
+	usingCheckerTexture = !usingCheckerTexture;
+}
