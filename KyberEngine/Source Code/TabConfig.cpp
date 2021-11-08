@@ -173,6 +173,16 @@ update_status TabConfig::Update()
 		if (ImGui::Checkbox("Checker Texture", &checkerTexture))
 			app->renderer3D->ToggleCheckerTexture();
 	}
+	if (ImGui::CollapsingHeader("Scene"))
+	{
+		if (ImGui::Button("Clear Textures"))
+			app->scene->ClearSceneTextures();
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("Clear Scene"))
+			app->scene->ClearSceneMeshes();
+	}
 	ImGui::End();
 
 	return update_status::UPDATE_CONTINUE;

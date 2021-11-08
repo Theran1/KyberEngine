@@ -258,16 +258,6 @@ void ModuleRenderer3D::ToggleTexture2D()
 	texture2D ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 }
 
-//bool ModuleRenderer3D::GetVSync()
-//{
-//	return vSync;
-//}
-
-//void ModuleRenderer3D::SetVSync(bool _vsync)
-//{
-//	vSync = _vsync;
-//}
-
 bool ModuleRenderer3D::GetUsingCheckerTexture() const
 {
 	return usingCheckerTexture;

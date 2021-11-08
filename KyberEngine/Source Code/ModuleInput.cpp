@@ -122,7 +122,14 @@ update_status ModuleInput::PreUpdate(float dt)
 			if (!filePath.empty())
 			{
 				if (filePath.find(".fbx") != std::string::npos)
+				{
+					if (!App->scene->meshList.empty())
+						App->scene->ClearSceneMeshes();
+
 					App->assetsImporter->LoadMesh(filePath.c_str());
+				}
+				else if (filePath.find(".png") != std::string::npos)
+					App->scene->ApplyTexture(filePath.c_str());
 			}
 			break;
 		}

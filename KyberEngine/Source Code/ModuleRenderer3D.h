@@ -41,7 +41,7 @@ public:
 	void ToggleTexture2D();
 
 	//bool GetVSync();
-	//void SetVSync(bool _vsync);
+	//void SetVSync(bool vsync);
 
 	bool GetUsingCheckerTexture() const;
 	void ToggleCheckerTexture();

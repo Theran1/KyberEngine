@@ -21,7 +21,7 @@ Mesh::Mesh()
 	textureCoords = nullptr;
 	textureID = 0;
 
-	//checkerTextureID = 0;
+	checkerTextureID = 0;
 }
 
 Mesh::~Mesh()

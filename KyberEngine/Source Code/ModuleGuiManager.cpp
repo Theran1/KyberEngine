@@ -64,7 +64,7 @@ update_status ModuleGuiManager::Update(float dt)
 	{
 		if (ImGui::BeginMenu("Menu"))
 		{
-			if (ImGui::MenuItem("Quit Kyber Engine"))
+			if (ImGui::MenuItem("Quit", "ESC"))
 				return status = update_status::UPDATE_STOP;
 
 			ImGui::EndMenu();

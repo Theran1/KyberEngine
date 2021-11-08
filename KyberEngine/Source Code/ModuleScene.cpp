@@ -19,13 +19,19 @@ bool ModuleScene::Start()
 
 	bool ret = true;
 
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
+	App->camera->Move(vec3(1.0f, 5.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	scenePlane = new Plane(0, 1, 0, 0);
 	scenePlane->axis = true;
 
 	App->assetsImporter->LoadMesh("Assets/Meshes/baker_house.fbx");
+
+	if (!meshList.empty())
+	{
+		for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+			(*it)->textureID = App->assetsImporter->LoadTexture("Assets/Textures/baker_house.png");
+	}
 
 	return ret;
 }
@@ -40,8 +46,11 @@ update_status ModuleScene::PostUpdate(float dt)
 {
 	scenePlane->Render();
 
-	for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
-		(*it)->Render(App->renderer3D->GetUsingCheckerTexture());
+	if (!meshList.empty())
+	{
+		for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+			(*it)->Render(App->renderer3D->GetUsingCheckerTexture());
+	}
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -54,4 +63,34 @@ bool ModuleScene::CleanUp()
 	RELEASE(scenePlane);
 
 	return true;
+}
+
+void ModuleScene::ApplyTexture(const char* path)
+{
+	if (!meshList.empty())
+	{
+		for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+			(*it)->textureID = App->assetsImporter->LoadTexture(path);
+	}
+}
+
+void ModuleScene::ClearSceneMeshes()
+{
+	if (!meshList.empty())
+	{
+		for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+		{
+			(*it)->~Mesh();
+		}
+	}
+	meshList.clear();
+}
+
+void ModuleScene::ClearSceneTextures()
+{
+	if (!meshList.empty())
+	{
+		for (std::vector<Mesh*>::iterator it = meshList.begin(); it != meshList.end(); ++it)
+			(*it)->textureID = 0;
+	}
 }

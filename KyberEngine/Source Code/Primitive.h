@@ -53,7 +53,7 @@ public:
 	uint textureID = 0;
 
 	// Checker texture
-	uint checkerTextureID;
+	uint checkerTextureID = 0;
 };
 
 class Primitive

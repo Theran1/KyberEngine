@@ -49,6 +49,7 @@ public:
 private:
 	uint screenWidth;
 	uint screenHeight;
+
 	bool fullscreen;
 	bool resizable;
 	bool borderless;

@@ -32,6 +32,10 @@ bool ModuleAssImp::Init()
 
 bool ModuleAssImp::Start()
 {
+	// Assign Mesh Texture
+	//scene->mMaterials[0]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &aiString::aiString("Assets/Textures/baker_house.png"));
+	//mesh->textureID = LoadTexture(filePath);
+
 	return true;
 }
 
@@ -45,9 +49,9 @@ bool ModuleAssImp::CleanUp()
 	return true;
 }
 
-void ModuleAssImp::LoadMesh(const char* meshFilename)
+void ModuleAssImp::LoadMesh(const char* path)
 {
-	const aiScene* scene = aiImportFile(meshFilename, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -79,7 +83,7 @@ void ModuleAssImp::LoadMesh(const char* meshFilename)
 				}
 			}
 
-			// Copying Texture coordinates
+			// Storing Texture coordinates
 			if (scene->mMeshes[i]->mTextureCoords != NULL)
 			{
 				mesh->textureCoords = new float[mesh->numVertices * 2];
@@ -91,7 +95,7 @@ void ModuleAssImp::LoadMesh(const char* meshFilename)
 				}
 			}
 			else
-				LOG("Warning, No texture coordinates found");
+				LOG("Error, no texture coordinates");
 
 			if (scene->mMeshes[i]->mTextureCoords != NULL)
 			{
@@ -105,11 +109,7 @@ void ModuleAssImp::LoadMesh(const char* meshFilename)
 				}
 			}
 			else
-				LOG("Warning, No Normal coordinates found");
-
-			// Assign Mesh Texture
-			scene->mMaterials[0]->GetTexture(aiTextureType::aiTextureType_DIFFUSE, 0, &aiString::aiString("Assets/Textures/baker_house.png"));
-			mesh->textureID = LoadTexture("Assets/Textures/baker_house.png");
+				LOG("Error, no normal coordinates");
 
 			// Create Checkers Texture
 			mesh->checkerTextureID = mesh->CreateCheckerTexture();
@@ -120,7 +120,7 @@ void ModuleAssImp::LoadMesh(const char* meshFilename)
 		aiReleaseImport(scene);
 	}
 	else
-		LOG("Error loading scene %s", meshFilename);
+		LOG("Error loading scene %s", path);
 }
 
 uint ModuleAssImp::LoadTexture(const char* path)

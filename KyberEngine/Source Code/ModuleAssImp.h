@@ -3,6 +3,7 @@
 #include "Globals.h"
 
 class Mesh;
+class aiMesh;
 
 class ModuleAssImp : public Module
 {
@@ -14,9 +15,6 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	//void LoadModel(const char* fileName);
-	void LoadMesh(const char* meshFilename);
+	void LoadMesh(const char* path);
 	uint LoadTexture(const char* path);
-
-public:
 };
