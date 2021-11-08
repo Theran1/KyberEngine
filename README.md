@@ -65,6 +65,9 @@ Each of the panels has its respective options available, here are such hierarchy
     ### Textures
       - Toggle:
         - Checker Texture 
+    ### Scene 
+      - Clear Textures
+      - Clear Scene (Removes any present Model).
 
 ## Help
   - About
@@ -78,4 +81,5 @@ Each of the panels has its respective options available, here are such hierarchy
 
 # Additional Features & Notes
 ## Assignment 0.1
- - You can drag and drop FBX's in the Window and they will load correctly.
+ - You can drag and drop FBX's and Textures in the Window and they will load correctly.
+ - When dragging an FBX, any previous FBX Model will be deleted.
